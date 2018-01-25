@@ -1,0 +1,255 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <div class="site-menubar">
+            <div class="site-menubar-body">
+                <div>
+                    <div>
+<!--                        <div class="site-menubar-section">
+                            <h5>
+                                Monthly Consumed [COS]
+                            </h5>
+                            EGP1,000,000.00
+                            <h5>
+                                Monthly gained [NS]
+                            </h5>
+                            EGP1,000,000.00
+                        </div>-->
+                        
+                        <ul class="site-menu">
+                            <li class="site-menu-category">Summary</li>
+                            <li class="site-menu-item has-sub">
+                            <a href="javascript:void(0)">
+                                <i class="site-menu-icon md-assignment" aria-hidden="true"></i>
+                              <span class="site-menu-title">Reports/Analysis</span>
+                              <span class="site-menu-arrow"></span>
+                            </a>
+                            <ul class="site-menu-sub">
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/common/index.xhtml">
+                                    <span class="site-menu-title">Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/summary/grn_deserved.xhtml">
+                                    <span class="site-menu-title">GRN Deserved/Remaining</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/summary/md_deserved.xhtml">
+                                    <span class="site-menu-title">MD Deserved/Remaining</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/summary/asp_ledger.xhtml">
+                                    <span class="site-menu-title">ASP Ledger</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/summary/customer_ledger.xhtml">
+                                    <span class="site-menu-title">VF Ledger</span>
+                                </a>
+                            </li>
+                            </ul>
+                            </li>
+                            
+                            <li class="site-menu-category">Purchase Orders Management</li>
+                            <li class="site-menu-item has-sub">
+                            <a href="javascript:void(0)">
+                                <i class="site-menu-icon md-assignment" aria-hidden="true"></i>
+                              <span class="site-menu-title">ASP</span>
+                              <span class="site-menu-arrow"></span>
+                            </a>
+                            <ul class="site-menu-sub">
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/purchase_orders/create_asp_ew_po.xhtml">
+                                    <span class="site-menu-title">Create PO (Extra Work)</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/purchase_orders/create_asp_sr_po.xhtml">
+                                    <span class="site-menu-title">Create PO (Service)</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/purchase_orders/view_asp_po.xhtml">
+                                    <span class="site-menu-title">View/Edit POs</span>
+                                </a>
+                            </li>
+                            </ul>
+                            </li>
+                            <li class="site-menu-item has-sub">
+                            <a href="javascript:void(0)">
+                                <i class="site-menu-icon md-assignment" aria-hidden="true"></i>
+                              <span class="site-menu-title">Customer</span>
+                              <span class="site-menu-arrow"></span>
+                            </a>
+                            <ul class="site-menu-sub">
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/purchase_orders/create_customer_es.xhtml">
+                                    <span class="site-menu-title">Create Project (ES)</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/purchase_orders/create_customer_ew_po.xhtml">
+                                    <span class="site-menu-title">Create PO (Extra Work)</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/purchase_orders/create_customer_sr_po.xhtml">
+                                    <span class="site-menu-title">Create PO (Service)</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/purchase_orders/view_customer_po.xhtml">
+                                    <span class="site-menu-title">View/Edit POs</span>
+                                </a>
+                            </li>
+                            </ul>
+                            </li>
+                            <li class="site-menu-category">JV/Time Reporting</li>
+                            <li class="site-menu-item has-sub">
+                            <a href="javascript:void(0)">
+                                <i class="site-menu-icon md-assignment" aria-hidden="true"></i>
+                              <span class="site-menu-title">Cost of Sales</span>
+                              <span class="site-menu-arrow"></span>
+                            </a>
+                            <ul class="site-menu-sub">
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/jv_timereporting/create_jv.xhtml">
+                                    <span class="site-menu-title">Create JV</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/jv_timereporting/view_jv.xhtml">
+                                    <span class="site-menu-title">View/Edit JV</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/jv_timereporting/create_tr.xhtml">
+                                    <span class="site-menu-title">Create TR</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/jv_timereporting/view_tr.xhtml">
+                                    <span class="site-menu-title">View/Edit TR</span>
+                                </a>
+                            </li>
+                            </ul>
+                            </li>
+                            <li class="site-menu-category">Credit Notes/Penalties</li>
+                            <li class="site-menu-item has-sub">
+                            <a href="javascript:void(0)">
+                                <i class="site-menu-icon md-assignment" aria-hidden="true"></i>
+                              <span class="site-menu-title">COS/NS</span>
+                              <span class="site-menu-arrow"></span>
+                            </a>
+                            <ul class="site-menu-sub">
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/creditnotes_penalities/create_cn.xhtml">
+                                    <span class="site-menu-title">Create CN</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/creditnotes_penalities/view_cn.xhtml">
+                                    <span class="site-menu-title">View/Edit CN</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/creditnotes_penalities/create_pn.xhtml">
+                                    <span class="site-menu-title">Create PN</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/creditnotes_penalities/view_pn.xhtml">
+                                    <span class="site-menu-title">View/Edit PN</span>
+                                </a>
+                            </li>
+                            </ul>
+                            </li>
+                            <li class="site-menu-category">Raw COS/NS</li>
+                            <li class="site-menu-item has-sub">
+                            <a href="javascript:void(0)">
+                                <i class="site-menu-icon md-assignment" aria-hidden="true"></i>
+                              <span class="site-menu-title">COS/NS</span>
+                              <span class="site-menu-arrow"></span>
+                            </a>
+                            <ul class="site-menu-sub">
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/raw_cosns/create_ns.xhtml">
+                                    <span class="site-menu-title">Create NS</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/raw_cosns/create_cos.xhtml">
+                                    <span class="site-menu-title">Create COS</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/raw_cosns/view_ns.xhtml">
+                                    <span class="site-menu-title">View/Edit NS</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/raw_cosns/view_cos.xhtml">
+                                    <span class="site-menu-title">View/Edit COS</span>
+                                </a>
+                            </li>
+                            </ul>
+                            </li>
+                            <li class="site-menu-category">Extra Work</li>
+                            <li class="site-menu-item has-sub">
+                            <a href="javascript:void(0)">
+                                <i class="site-menu-icon md-assignment" aria-hidden="true"></i>
+                              <span class="site-menu-title">Work Orders</span>
+                              <span class="site-menu-arrow"></span>
+                            </a>
+                            <ul class="site-menu-sub">
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/extrawork/ro/create_extrawork.xhtml">
+                                    <span class="site-menu-title">Create WO</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/extrawork/ro/view_extrawork.xhtml">
+                                    <span class="site-menu-title">View/Edit WO</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="#{request.contextPath}/app/extrawork/ro/export.xhtml">
+                                    <span class="site-menu-title">Export</span>
+                                </a>
+                            </li>
+                            </ul>
+                            </li>
+                        </ul>
+
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="site-menubar-footer">
+                <a href="javascript: void(0);" class="fold-show" data-placement="top" data-toggle="tooltip"
+                   data-original-title="Settings">
+                    <span class="icon md-settings" aria-hidden="true"></span>
+                </a>
+                <a href="javascript: void(0);" data-placement="top" data-toggle="tooltip" data-original-title="Lock">
+                    <span class="icon md-eye-off" aria-hidden="true"></span>
+                </a>
+                <a href="#{request.contextPath}/logout" data-placement="top" data-toggle="tooltip" data-original-title="Logout">
+                    <span class="icon md-power" aria-hidden="true"></span>
+                </a>
+            </div>
+        </div>
+    </cc:implementation>
+</html>

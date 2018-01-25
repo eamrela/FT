@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    <application>
+        <resource-bundle>
+            <base-name>/Bundle</base-name>
+            <var>bundle</var>
+        </resource-bundle>
+        
+<!--        <navigation-rule>
+            <from-view-id>/app/extrawork/asp/create_extrawork.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{extraWorkController.prepareCreateASP}</from-action>
+            <from-outcome>com.vodafone.ft.entities.ExtraWork[ id=null ]</from-outcome>
+            <to-view-id>/app/extrawork/asp/create_extrawork.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>-->
+        
+<!--        <navigation-rule>
+            <from-view-id>/app/extrawork/bp/create_extrawork.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{extraWorkController.prepareCreateBP}</from-action>
+            <from-outcome>com.vodafone.ft.entities.ExtraWork[ id=null ]</from-outcome>
+            <to-view-id>/app/extrawork/bp/create_extrawork.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>
+        
+        <navigation-rule>
+            <from-view-id>/app/extrawork/do/create_extrawork.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{extraWorkController.prepareCreateDO}</from-action>
+            <from-outcome>com.vodafone.ft.entities.ExtraWork[ id=null ]</from-outcome>
+            <to-view-id>/app/extrawork/do/create_extrawork.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>
+        
+        <navigation-rule>
+            <from-view-id>/app/extrawork/ro/create_extrawork.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{extraWorkController.prepareCreateRO}</from-action>
+            <from-outcome>com.vodafone.ft.entities.ExtraWork[ id=null ]</from-outcome>
+            <to-view-id>/app/extrawork/ro/create_extrawork.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>-->
+        
+        <navigation-rule>
+            <from-view-id>/app/purchase_orders/create_asp_ew_po.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{aspExtraworkPoController.prepareCreate}</from-action>
+            <from-outcome>com.vodafone.ft.entities.AspExtraworkPo[ poNumber=null ]</from-outcome>
+            <to-view-id>/app/purchase_orders/create_asp_ew_po.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>
+        
+        <navigation-rule>
+            <from-view-id>/app/purchase_orders/create_asp_sr_po.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{aspServicePoController.prepareCreate}</from-action>
+            <from-outcome>com.vodafone.ft.entities.AspServicePo[ poNumber=null ]</from-outcome>
+            <to-view-id>/app/purchase_orders/create_asp_sr_po.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>
+        
+        <navigation-rule>
+            <from-view-id>/app/purchase_orders/create_customer_ew_po.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{customerExtraworkPoController.prepareCreate}</from-action>
+            <from-outcome>com.vodafone.ft.entities.CustomerExtraworkPo[ poNumber=null ]</from-outcome>
+            <to-view-id>/app/purchase_orders/create_customer_ew_po.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>
+        
+        <navigation-rule>
+            <from-view-id>/app/purchase_orders/create_customer_sr_po.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{customerServicePoController.prepareCreate}</from-action>
+            <from-outcome>com.vodafone.ft.entities.CustomerServicePo[ poNumber=null ]</from-outcome>
+            <to-view-id>/app/purchase_orders/create_customer_sr_po.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>
+        
+        <navigation-rule>
+            <from-view-id>/app/jv_timereporting/create_jv.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{jvReportingController.prepareCreate}</from-action>
+            <from-outcome>com.vodafone.ft.entities.JvReporting[ id=null ]</from-outcome>
+            <to-view-id>/app/jv_timereporting/create_jv.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>
+       
+        <navigation-rule>
+            <from-view-id>/app/jv_timereporting/create_tr.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{timeReportingController.prepareCreate}</from-action>
+            <from-outcome>com.vodafone.ft.entities.TimeReporting[ id=null ]</from-outcome>
+            <to-view-id>/app/jv_timereporting/create_tr.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>
+        
+        <navigation-rule>
+            <from-view-id>/app/creditnotes_penalities/create_cn.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{creditNoteController.prepareCreate}</from-action>
+            <from-outcome>tt.CreditNote[ id=null ]</from-outcome>
+            <to-view-id>/app/creditnotes_penalities/create_cn.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>
+        
+        <navigation-rule>
+            <from-view-id>/app/creditnotes_penalities/create_pn.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{penaltyController.prepareCreate}</from-action>
+            <from-outcome>tt.Penalty[ id=null ]</from-outcome>
+            <to-view-id>/app/creditnotes_penalities/create_pn.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>
+        
+        <navigation-rule>
+            <from-view-id>/app/purchase_orders/create_customer_es.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{customerExtraworkPoController.prepareCreate}</from-action>
+            <from-outcome>com.vodafone.ft.entities.CustomerExtraworkPo[ poNumber=null ]</from-outcome>
+            <to-view-id>/app/purchase_orders/create_customer_es.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>
+        
+        <navigation-rule>
+            <from-view-id>/app/raw_cosns/create_ns.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{netSalesController.prepareCreate}</from-action>
+            <from-outcome>new3.NetSales[ netsalesId=null ]</from-outcome>
+            <to-view-id>/app/raw_cosns/create_ns.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>
+        
+        <navigation-rule>
+            <from-view-id>/app/raw_cosns/create_cos.xhtml</from-view-id>
+            <navigation-case>
+            <from-action>#{costOfSalesController.prepareCreate}</from-action>
+            <from-outcome>new3.CostOfSales[ costId=null ]</from-outcome>
+            <to-view-id>/app/raw_cosns/create_cos.xhtml</to-view-id>
+          </navigation-case>
+        </navigation-rule>
+    </application>
+</faces-config>

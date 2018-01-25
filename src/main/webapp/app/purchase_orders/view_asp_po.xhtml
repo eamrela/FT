@@ -1,0 +1,742 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      class="no-js css-menubar"
+      xmlns:FT="http://xmlns.jcp.org/jsf/composite/components"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui"/>
+    <meta name="description" content="TT System for Telecom Egypt (WE)"/>
+    <meta name="author" content="Amr El Ansary - amr.el-ansary@hotmail.com"/>
+    <title>FT</title>
+    
+    <link rel="apple-touch-icon" href="#{resource['app/assets/images/apple-touch-icon.png']}"/>
+    <link rel="shortcut icon" href="#{resource['app/assets/images/favicon.png']}"/>
+    
+    <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+    <h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />
+    <h:outputScript library="js" name="jsfcrud.js" target="head" />
+    <h:outputStylesheet name="css/jsfcrud.css"/>
+    
+    <h:outputStylesheet name="app/global/css/bootstrap.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/css/bootstrap-extend.min3f0d.css"/>
+    <h:outputStylesheet name="app/assets/css/site.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/vendor/animsition/animsition.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/vendor/asscrollable/asScrollable.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/vendor/switchery/switchery.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/vendor/intro-js/introjs.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/vendor/slidepanel/slidePanel.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/vendor/waves/waves.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/fonts/material-design/material-design.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/fonts/brand-icons/brand-icons.min3f0d.css"/>
+    
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,400italic,700'/>
+    
+    <script src="#{resource['app/global/vendor/modernizr/modernizr.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/breakpoints/breakpoints.min.js']}"></script>
+    <style>
+            .ui-growl{top: 100px;}
+            .ui-fileupload .start {
+            display: none;
+            }
+            .ui-fileupload .cancel {
+                display: none;
+            }
+            .ui-fileupload .progress {
+                display: none;
+            }
+            .ui-fileupload-progress {
+                display: none;
+            }
+              .ui-fileupload-content .ui-progressbar {
+                width: 0px;
+                height: 0px;
+                margin: 0
+                }
+        </style>
+        
+    </h:head>
+    <h:body>
+    <FT:TopBar/>
+    <FT:NavigationMenu/>
+    <!-- Page -->
+    <div class="page animsition">
+    <h:form id="aspPoForm">
+    <p:growl id="growl"/>
+    <div class="page-content">
+      <div class="row">
+       <div class="col-md-12 col-sm-12 col-xs-12">
+                    <p:tabView id="tabView">
+                        <p:tab title="Service">
+                            <p:dataTable id="datalistServicePo"
+                                         var="servicePo" 
+                                         value="#{aspServicePoController.items}"
+                                         rowKey="#{servicePo.poNumber}"
+                                         rows="20"
+                                         paginator="true"
+                                         paginatorPosition="bottom"
+                                         selectionMode="single"
+                                         selection="#{aspServicePoController.selectedUserPo}"
+                                        
+                                         >
+                        <p:ajax event="rowSelect"   update=":aspPoForm:tabView:menuItemsServicePo,
+                                                           deleteButton"/>
+                                <p:column style="font-size: 9px;width: 30px;">
+                                    <p:rowToggler/>
+                                </p:column>
+                                <p:column headerText="PO#" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{servicePo.poNumber}">
+                                    <h:outputText value="#{servicePo.poNumber}" />
+                                </p:column>
+                                <p:column headerText="Date" 
+                                          style="font-size: 9px;"
+                                          sortBy="#{servicePo.poDate}">
+                                    <h:outputText value="#{servicePo.poDate}">
+                                        <f:convertDateTime pattern="yyyy/MM/dd"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Domain" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{servicePo.domainName}">
+                                    <h:outputText value="#{servicePo.domainName}" />
+                                </p:column>
+                                <p:column headerText="Subdomain" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{servicePo.subDomain}">
+                                    <h:outputText value="#{servicePo.subDomain}" />
+                                </p:column>
+                                <p:column headerText="ASP" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{servicePo.subcontractor}">
+                                    <h:outputText value="#{servicePo.subcontractor}" />
+                                </p:column>
+                                <p:column headerText="Description" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{servicePo.poDescription}">
+                                    <h:outputText value="#{servicePo.poDescription}" />
+                                </p:column>
+                                <p:column headerText="Factor" 
+                                          style="font-size: 9px;">
+                                    <h:outputText value="#{servicePo.factor}" />
+                                </p:column>
+                                <p:column headerText="Servicevalue" 
+                                          style="font-size: 9px;">
+                                    <h:outputText value="#{servicePo.serviceValue}">
+                                        <f:convertNumber type="currency" currencyCode="EGP"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Po Value" 
+                                          style="font-size: 9px;">
+                                    <h:outputText value="#{servicePo.poValue}">
+                                        <f:convertNumber type="currency" currencyCode="EGP"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Remaining" 
+                                          style="font-size: 9px;">
+                                    <h:outputText value="#{servicePo.remainingFromPo}">
+                                        <f:convertNumber type="currency" currencyCode="EGP"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Creator" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{servicePo.creator.userName}">
+                                    <h:outputText value="#{servicePo.creator.userName}" />
+                                </p:column>
+                                <p:column headerText="Network" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{servicePo.networkName}">
+                                    <h:outputText value="#{servicePo.networkName}" />
+                                </p:column>
+                                <p:column headerText="ES" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{servicePo.earlyStart}">
+                                    <h:outputText value="#{servicePo.earlyStart}" />
+                                </p:column>
+                                <p:rowExpansion>
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                        <label class="control-label" for="datalistServicePoGrn">GRNs:</label>
+                                        <br/>
+                                        <p>You can create a GRN with a value of 
+                                            <strong>
+                                            <h:outputText value="#{servicePo.grnDeserved}">
+                                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                                            </h:outputText>
+                                            </strong>
+                                        </p>
+                                        <p:dataTable id="datalistServicePoGrn"
+                                                 var="grn" 
+                                                 value="#{servicePo.aspServiceGrnCollection}"
+                                                 rows="5"
+                                                 editable="true"
+                                                 rowKey="#{grn.id}"
+                                                 paginatorPosition="bottom"
+                                                 paginator="true">
+                                            
+                                            <p:ajax event="rowEdit" listener="#{aspServiceGrnController.onRowEdit}" 
+                                                    update=":aspPoForm:tabView:datalistServicePo,
+                                                            :aspPoForm:tabView:datalistServicePo:datalistServicePoGrn,
+                                                            :aspPoForm:growl" />
+                                            
+                                        <p:column headerText="Grn#" style="font-size: 9px;">
+                                            <p:cellEditor>
+                                            <f:facet name="output">
+                                            <h:outputText value="#{grn.grnNumber}" />
+                                            </f:facet>
+                                            <f:facet name="input">
+                                            <h:inputText id="grnNumber" class="form-control"  value="#{grn.grnNumber}"/>
+                                            </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column headerText="Date" style="font-size: 9px;">
+                                            <p:cellEditor>
+                                            <f:facet name="output">
+                                            <h:outputText value="#{grn.grnDate}">
+                                                <f:convertDateTime pattern="yyyy/MM/dd"/>
+                                            </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                 <p:calendar id="ewDate" 
+                                                            value="#{grn.grnDate}"
+                                                            required="true"
+                                                            styleClass="form-control"
+                                                            requiredMessage="Date can't be empty">
+                                                </p:calendar>
+                                            </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column headerText="Grn Value" style="font-size: 9px;">
+                                            <p:cellEditor>
+                                            <f:facet name="output">
+                                            <h:outputText value="#{grn.grnValue}">
+                                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                                            </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputNumber id="workDoneValue" 
+                                                            class="form-control" 
+                                                            symbol=" EGP" 
+                                                            symbolPosition="s"
+                                                            decimalSeparator="." thousandSeparator=","
+                                                            value="#{grn.grnValue}"
+                                                            required="true"
+                                                            requiredMessage="Service Value can't be empty"/>
+                                            </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column style="width:32px">
+                                            <p:rowEditor />
+                                        </p:column>
+                                    </p:dataTable>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                        <label class="control-label" for="datalistServiceWorkDone">Work Done:</label>
+                                        <br/>
+                                        <p>Total work done on this PO is
+                                            <strong>
+                                            <h:outputText value="#{servicePo.totalWorkDone}">
+                                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                                            </h:outputText>
+                                            </strong>
+                                        </p>
+                                        <p:dataTable id="datalistServiceWorkDone"
+                                                 var="workDone" 
+                                                 value="#{servicePo.aspServiceWorkDoneCollection}"
+                                                 rows="5"
+                                                 editable="true"
+                                                 rowKey="#{workDone.id}"
+                                                 paginatorPosition="bottom"
+                                                 paginator="true">
+                                            <p:ajax event="rowEdit" listener="#{aspServiceWorkDoneController.onRowEdit}" 
+                                                    update=":aspPoForm:tabView:datalistServicePo,
+                                                            :aspPoForm:tabView:datalistServicePo:datalistServiceWorkDone,
+                                                            :aspPoForm:growl" />
+                                            
+                                        <p:column headerText="#" style="font-size: 9px;">
+                                            <h:outputText value="#{workDone.id}" />
+                                        </p:column>
+
+                                        <p:column headerText="Date" style="font-size: 9px;">
+                                            <p:cellEditor>
+                                            <f:facet name="output">
+                                            <h:outputText value="#{workDone.workDoneDate}">
+                                                <f:convertDateTime pattern="yyyy/MM/dd"/>
+                                            </h:outputText>
+                                            </f:facet> 
+                                            <f:facet name="input">
+                                            <p:calendar id="ewDate" 
+                                                        value="#{workDone.workDoneDate}"
+                                                        required="true"
+                                                        styleClass="form-control"
+                                                        requiredMessage="Date can't be empty">
+                                            </p:calendar>
+                                            </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column headerText="WD Percentage" style="font-size: 9px;">
+                                            <h:outputText value="#{workDone.workDonePercentage}" />
+                                        </p:column>
+
+                                        <p:column headerText="WD Value" style="font-size: 9px;">
+                                            <p:cellEditor>
+                                            <f:facet name="output">
+                                            <h:outputText value="#{workDone.workDoneValue}">
+                                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                                            </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                            <p:inputNumber id="workDoneValue" 
+                                                            class="form-control" 
+                                                            symbol=" EGP" 
+                                                            symbolPosition="s"
+                                                            decimalSeparator="." thousandSeparator=","
+                                                            value="#{workDone.workDoneValue}"
+                                                            required="true"
+                                                            requiredMessage="Service Value can't be empty"/>
+                                            </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column style="width:32px">
+                                            <p:rowEditor />
+                                        </p:column>
+                                    </p:dataTable>
+                                        </div>
+                                    </div>
+                                </p:rowExpansion>
+                                <f:facet name="footer">
+                                    <p:commandButton id="deleteButton" 
+                                                     icon="ui-icon-trash"  
+                                                     value="Delete" 
+                                                     actionListener="#{aspServicePoController.deletePo}" 
+                                                     update=":aspPoForm:growl,datalistServicePo" 
+                                                     disabled="#{empty aspServicePoController.selectedUserPo}"/>
+                                     <h:commandLink>
+                                         <img src="csv.png"/>
+                                        <p:dataExporter type="csv" target="datalistServicePo" fileName="asp_po_service.csv" />
+                                    </h:commandLink>
+                                </f:facet>
+                            </p:dataTable>
+                            <p:contextMenu id="menuItemsServicePo" for="datalistServicePo">
+                            <p:menuitem value="Edit" 
+                                        icon="ui-icon-pencil" 
+                                        oncomplete="PF('editDlgAspServicePo').show();"
+                                        update="datalistServicePo,:editAspServicePoForm" 
+                                        disabled="#{empty aspServicePoController.selectedUserPo}"/>
+                            <p:menuitem value="Add Workdone" 
+                                        icon="ui-icon-pencil" 
+                                        actionListener="#{aspServiceWorkDoneController.prepareCreate}"
+                                        oncomplete="PF('editDlgAspServiceWorkDone').show();"
+                                        update="datalistServicePo,:addAspServiceWorkDoneForm" 
+                                        disabled="#{empty aspServicePoController.selectedUserPo}"/>
+                            <p:menuitem value="Add GRN" 
+                                        icon="ui-icon-pencil" 
+                                        actionListener="#{aspServiceGrnController.prepareCreate}"
+                                        oncomplete="PF('editDlgAspServiceGrn').show();"
+                                        update="datalistServicePo,:addAspServiceGrnForm" 
+                                        disabled="#{empty aspServicePoController.selectedUserPo}"/>
+                            </p:contextMenu>
+                            
+                            
+                            
+                        </p:tab>
+                        <p:tab title="Extra Work">
+                            <p:dataTable id="datalistExtraworkPo"
+                                         var="extraworkPo" 
+                                         value="#{aspExtraworkPoController.items}"
+                                         rowKey="#{extraworkPo.poNumber}"
+                                         rows="20"
+                                         paginator="true"
+                                         paginatorPosition="bottom"
+                                         selectionMode="single"
+                                         selection="#{aspExtraworkPoController.selectedUserPo}"
+                                         >
+                        <p:ajax event="rowSelect"   update=":aspPoForm:tabView:menuItemsExtraworkPo,
+                                                            deleteButton"/>
+                                <p:column style="font-size: 9px;width: 30px;">
+                                    <p:rowToggler />
+                                </p:column>
+                                <p:column headerText="PO#" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{extraworkPo.poNumber}">
+                                    <h:outputText value="#{extraworkPo.poNumber}" />
+                                </p:column>
+                                <p:column headerText="Date" 
+                                          style="font-size: 9px;"
+                                          sortBy="#{extraworkPo.poDate}">
+                                    <h:outputText value="#{extraworkPo.poDate}">
+                                        <f:convertDateTime pattern="yyyy/MM/dd"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Domain" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{extraworkPo.domainName}">
+                                    <h:outputText value="#{extraworkPo.domainName}" />
+                                </p:column>
+                                <p:column headerText="Subdomain" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{extraworkPo.subDomain}">
+                                    <h:outputText value="#{extraworkPo.subDomain}" />
+                                </p:column>
+                                <p:column headerText="ASP" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{extraworkPo.subcontractor}">
+                                    <h:outputText value="#{extraworkPo.subcontractor}" />
+                                </p:column>
+                                <p:column headerText="Description" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{extraworkPo.poDescription}">
+                                    <h:outputText value="#{extraworkPo.poDescription}" />
+                                </p:column>
+                                <p:column headerText="Factor" 
+                                          style="font-size: 9px;">
+                                    <h:outputText value="#{extraworkPo.factor}" />
+                                </p:column>
+                                <p:column headerText="Servicevalue" 
+                                          style="font-size: 9px;">
+                                    <h:outputText value="#{extraworkPo.serviceValue}">
+                                        <f:convertNumber type="currency" currencyCode="EGP"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Po Value" 
+                                          style="font-size: 9px;">
+                                    <h:outputText value="#{extraworkPo.poValue}">
+                                        <f:convertNumber type="currency" currencyCode="EGP"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Remaining" 
+                                          style="font-size: 9px;">
+                                    <h:outputText value="#{extraworkPo.remainingFromPo}">
+                                        <f:convertNumber type="currency" currencyCode="EGP"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Creator" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{extraworkPo.creator.userName}">
+                                    <h:outputText value="#{extraworkPo.creator.userName}" />
+                                </p:column>
+                                <p:column headerText="Network" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{extraworkPo.networkName}">
+                                    <h:outputText value="#{extraworkPo.networkName}" />
+                                </p:column>
+                                <p:column headerText="ES" 
+                                          style="font-size: 9px;"
+                                          filterMatchMode="contains"
+                                          filterBy="#{extraworkPo.earlyStart}">
+                                    <h:outputText value="#{extraworkPo.earlyStart}" />
+                                </p:column>
+                                <p:rowExpansion>
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                        <label class="control-label" for="datalistExtraworkPoGrn">GRNs:</label>
+                                        <br/>
+                                        <p>You can create a GRN with a value of 
+                                            <strong>
+                                            <h:outputText value="#{extraworkPo.grnDeserved}">
+                                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                                            </h:outputText>
+                                            </strong>
+                                        </p>
+                                        <p:dataTable id="datalistExtraworkPoGrn"
+                                                 var="grn" 
+                                                 value="#{extraworkPo.aspExtraworkGrnCollection}"
+                                                 rows="5" editable="true"
+                                                 rowKey="#{grn.id}"
+                                                 paginatorPosition="bottom"
+                                                 paginator="true"
+                                                 >
+                                            
+                                            <p:ajax event="rowEdit" listener="#{aspExtraworkGrnController.onRowEdit}" 
+                                                    update=":aspPoForm:tabView:datalistExtraworkPo,
+                                                            :aspPoForm:tabView:datalistExtraworkPo:datalistExtraworkPoGrn,
+                                                            :aspPoForm:growl" />
+                                            
+                                        <p:column headerText="Grn#" style="font-size: 9px;">
+                                            <p:cellEditor>
+                                            <f:facet name="output">
+                                            <h:outputText value="#{grn.grnNumber}" />
+                                            </f:facet>
+                                            <f:facet name="input">
+                                            <h:inputText id="grnNumber" class="form-control"  value="#{grn.grnNumber}"/>
+                                            </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column headerText="Date" style="font-size: 9px;">
+                                            <p:cellEditor>
+                                            <f:facet name="output">
+                                            <h:outputText value="#{grn.grnDate}">
+                                                <f:convertDateTime pattern="yyyy/MM/dd"/>
+                                            </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                 <p:calendar id="ewDate" 
+                                                            value="#{grn.grnDate}"
+                                                            required="true"
+                                                            styleClass="form-control"
+                                                            requiredMessage="Date can't be empty">
+                                                </p:calendar>
+                                            </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column headerText="Grn Value" style="font-size: 9px;">
+                                            <p:cellEditor>
+                                            <f:facet name="output">
+                                            <h:outputText value="#{grn.grnValue}">
+                                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                                            </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                                <p:inputNumber id="workDoneValue" 
+                                                            class="form-control" 
+                                                            symbol=" EGP" 
+                                                            symbolPosition="s"
+                                                            decimalSeparator="." thousandSeparator=","
+                                                            value="#{grn.grnValue}"
+                                                            required="true"
+                                                            requiredMessage="Service Value can't be empty"/>
+                                            </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column style="width:32px">
+                                            <p:rowEditor />
+                                        </p:column>
+                                    </p:dataTable>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                        <label class="control-label" for="datalistExtraworkWorkDone">Work Done:</label>
+                                        <br/>
+                                        <p>Total work done on this PO is
+                                            <strong>
+                                            <h:outputText value="#{extraworkPo.totalWorkDone}">
+                                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                                            </h:outputText>
+                                            </strong>
+                                        </p>
+                                        <p:dataTable id="datalistExtraworkWorkDone"
+                                                 var="workDone" 
+                                                 value="#{extraworkPo.aspExtraworkWorkDoneCollection}"
+                                                 rows="5"
+                                                 editable="true"
+                                                 rowKey="#{workDone.id}"
+                                                 paginatorPosition="bottom"
+                                                 paginator="true">
+                                            <p:ajax event="rowEdit" listener="#{aspExtraworkWorkDoneController.onRowEdit}" 
+                                                    update=":aspPoForm:tabView:datalistExtraworkPo,
+                                                            :aspPoForm:tabView:datalistExtraworkPo:datalistExtraworkWorkDone,
+                                                            :aspPoForm:growl" />
+                                        <p:column headerText="#" style="font-size: 9px;">
+                                            <h:outputText value="#{workDone.id}" />
+                                        </p:column>
+
+                                        <p:column headerText="Date" style="font-size: 9px;">
+                                            <p:cellEditor>
+                                            <f:facet name="output">
+                                            <h:outputText value="#{workDone.workDoneDate}">
+                                                <f:convertDateTime pattern="yyyy/MM/dd"/>
+                                            </h:outputText>
+                                            </f:facet> 
+                                            <f:facet name="input">
+                                            <p:calendar id="ewDate" 
+                                                        value="#{workDone.workDoneDate}"
+                                                        required="true"
+                                                        styleClass="form-control"
+                                                        requiredMessage="Date can't be empty">
+                                            </p:calendar>
+                                            </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column headerText="WD Percentage" style="font-size: 9px;">
+                                            <h:outputText value="#{workDone.workDonePercentage}" />
+                                        </p:column>
+
+                                        <p:column headerText="WD Value" style="font-size: 9px;">
+                                            <p:cellEditor>
+                                            <f:facet name="output">
+                                            <h:outputText value="#{workDone.workDoneValue}">
+                                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                                            </h:outputText>
+                                            </f:facet>
+                                            <f:facet name="input">
+                                            <p:inputNumber id="workDoneValue" 
+                                                            class="form-control" 
+                                                            symbol=" EGP" 
+                                                            symbolPosition="s"
+                                                            decimalSeparator="." thousandSeparator=","
+                                                            value="#{workDone.workDoneValue}"
+                                                            required="true"
+                                                            requiredMessage="Service Value can't be empty"/>
+                                            </f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column style="width:32px">
+                                            <p:rowEditor />
+                                        </p:column>
+                                    </p:dataTable>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                        <label class="control-label" for="datalistExtraworkCorrelated">Associated Extra work:</label>
+                                        <p:dataTable    id="datalistExtraworkCorrelated"
+                                                        var="associatedExtrawork" 
+                                                        value="#{extraworkPo.extraWorkCollection}"
+                                                        rowKey="#{associatedExtrawork.id}"
+                                                        paginatorPosition="bottom"
+                                                        paginator="true">
+
+                                               <p:column headerText="Id" style="font-size: 9px;">
+                                                   <h:outputText value="#{associatedExtrawork.id}" />
+                                               </p:column>
+                                               <p:column headerText="Site" style="font-size: 9px;">
+                                                   <h:outputText value="#{associatedExtrawork.site}" />
+                                               </p:column>
+                                               <p:column headerText="Domain" style="font-size: 9px;">
+                                                   <h:outputText value="#{associatedExtrawork.domainName}" />
+                                               </p:column>
+                                               <p:column headerText="Subdomain" style="font-size: 9px;">
+                                                   <h:outputText value="#{associatedExtrawork.subDomain}" />
+                                               </p:column>
+                                               <p:column headerText="Date" style="font-size: 9px;">
+                                                   <h:outputText value="#{associatedExtrawork.activityDate}">
+                                                       <f:convertDateTime pattern="yyyy/MM/dd"/>
+                                                   </h:outputText>
+                                               </p:column>
+                                               <p:column headerText="ASP Price" style="font-size: 9px;">
+                                                   <h:outputText value="#{associatedExtrawork.totalPriceAsp}">
+                                                       <f:convertNumber type="currency" currencyCode="EGP"/>
+                                                   </h:outputText>
+                                               </p:column>
+                                            <p:column headerText="VF Price" style="font-size: 9px;">
+                                                   <h:outputText value="#{associatedExtrawork.totalPriceVendor}">
+                                                       <f:convertNumber type="currency" currencyCode="EGP"/>
+                                                   </h:outputText>
+                                               </p:column>
+                                           </p:dataTable>
+                                        </div>
+                                    </div>
+                                </p:rowExpansion>
+                                <f:facet name="footer">
+                                    <p:commandButton id="deleteButton" 
+                                                     icon="ui-icon-trash"  
+                                                     value="Delete" 
+                                                     actionListener="#{aspExtraworkPoController.deletePo}" 
+                                                     update=":aspPoForm:growl,datalistExtraworkPo" 
+                                                     disabled="#{empty aspExtraworkPoController.selectedUserPo}"/>
+                                    <h:commandLink>
+                                         <img src="csv.png"/>
+                                        <p:dataExporter type="csv" target="datalistExtraworkPo" fileName="asp_po_extrawork.csv" />
+                                    </h:commandLink>
+                                </f:facet>
+                            </p:dataTable>
+                            <p:contextMenu id="menuItemsExtraworkPo" for="datalistExtraworkPo">
+                            <p:menuitem value="Edit" 
+                                        icon="ui-icon-pencil" 
+                                        oncomplete="PF('editDlgAspExtraworkPo').show();"
+                                        update="datalistExtraworkPo,:editAspExtraworkPoForm" 
+                                        disabled="#{empty aspExtraworkPoController.selectedUserPo}"/>
+                            <p:menuitem value="Add Workdone" 
+                                        icon="ui-icon-pencil" 
+                                        actionListener="#{aspExtraworkWorkDoneController.prepareCreate}"
+                                        oncomplete="PF('editDlgAspExtraworkWorkDone').show();"
+                                        update="datalistExtraworkPo,:addAspExtraworkWorkDoneForm" 
+                                        disabled="#{empty aspExtraworkPoController.selectedUserPo}"/>
+                            <p:menuitem value="Add GRN" 
+                                        icon="ui-icon-pencil" 
+                                        actionListener="#{aspExtraworkGrnController.prepareCreate}"
+                                        oncomplete="PF('editDlgAspExtraworkGrn').show();"
+                                        update="datalistExtraworkPo,:addAspExtraworkGrnForm" 
+                                        disabled="#{empty aspExtraworkPoController.selectedUserPo}"/>
+                            <p:menuitem value="Correlate Extrawork" 
+                                        icon="ui-icon-arrowthick-2-e-w" 
+                                        oncomplete="PF('correlationDlg').show();"
+                                        update="datalistExtraworkPo,:correlationDlgForm" 
+                                        disabled="#{empty aspExtraworkPoController.selectedUserPo}"/>
+                            </p:contextMenu>
+                        </p:tab>
+                </p:tabView>
+                </div>
+    </div>
+    </div>
+    </h:form>
+    </div>
+    <!-- End Page -->
+    <ui:include src="modals/asp/edit_asp_po_service.xhtml"/>  
+    <ui:include src="modals/asp/edit_asp_po_extra_work.xhtml"/>  
+    <ui:include src="modals/asp/add_work_done_service.xhtml"/>  
+    <ui:include src="modals/asp/add_work_done_extra_work.xhtml"/>  
+    <ui:include src="modals/asp/add_grn_service.xhtml"/>  
+    <ui:include src="modals/asp/add_grn_extra_work.xhtml"/>  
+    <ui:include src="modals/asp/correlate.xhtml"/> 
+    <FT:Footer/>
+  
+
+    <script src="#{resource['app/global/vendor/bootstrap/bootstrap.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/animsition/animsition.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/asscroll/jquery-asScroll.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/mousewheel/jquery.mousewheel.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/asscrollable/jquery.asScrollable.all.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/ashoverscroll/jquery-asHoverScroll.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/waves/waves.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/switchery/switchery.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/intro-js/intro.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/screenfull/screenfull.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/slidepanel/jquery-slidePanel.min.js']}"></script>
+    <script src="#{resource['app/global/js/core.min.js']}"></script>
+    <script src="#{resource['app/assets/js/site.min.js']}"></script>
+    <script src="#{resource['app/assets/js/sections/menu.min.js']}"></script>
+    <script src="#{resource['app/assets/js/sections/menubar.min.js']}"></script>
+    <script src="#{resource['app/assets/js/sections/gridmenu.min.js']}"></script>
+    <script src="#{resource['app/assets/js/sections/sidebar.min.js']}"></script>
+    <script src="#{resource['app/global/js/configs/config-colors.min.js']}"></script>
+    <script src="#{resource['app/assets/js/configs/config-tour.min.js']}"></script>
+    <script src="#{resource['app/global/js/components/asscrollable.min.js']}"></script>
+    <script src="#{resource['app/global/js/components/animsition.min.js']}"></script>
+    <script src="#{resource['app/global/js/components/slidepanel.min.js']}"></script>
+    <script src="#{resource['app/global/js/components/switchery.min.js']}"></script>
+    <script src="#{resource['app/global/js/components/tabs.min.js']}"></script>
+
+    <script>
+       //<![CDATA[
+    Breakpoints();
+    (function(document, window, $) {
+      'use strict';
+
+      var Site = window.Site;
+      $(document).ready(function() {
+        Site.run();
+      });
+    })(document, window, jQuery);
+     //]]>
+  </script>
+    </h:body>
+</html>
+

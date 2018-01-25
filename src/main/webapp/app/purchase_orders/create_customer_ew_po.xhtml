@@ -1,0 +1,335 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      class="no-js css-menubar"
+      xmlns:FT="http://xmlns.jcp.org/jsf/composite/components"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui"/>
+    <meta name="description" content="TT System for Telecom Egypt (WE)"/>
+    <meta name="author" content="Amr El Ansary - amr.el-ansary@hotmail.com"/>
+    <title>FT</title>
+    
+    <link rel="apple-touch-icon" href="#{resource['app/assets/images/apple-touch-icon.png']}"/>
+    <link rel="shortcut icon" href="#{resource['app/assets/images/favicon.png']}"/>
+    
+    <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+    <h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />
+    <h:outputScript library="js" name="jsfcrud.js" target="head" />
+    <h:outputStylesheet name="css/jsfcrud.css"/>
+    
+    <h:outputStylesheet name="app/global/css/bootstrap.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/css/bootstrap-extend.min3f0d.css"/>
+    <h:outputStylesheet name="app/assets/css/site.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/vendor/animsition/animsition.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/vendor/asscrollable/asScrollable.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/vendor/switchery/switchery.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/vendor/intro-js/introjs.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/vendor/slidepanel/slidePanel.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/vendor/waves/waves.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/fonts/material-design/material-design.min3f0d.css"/>
+    <h:outputStylesheet name="app/global/fonts/brand-icons/brand-icons.min3f0d.css"/>
+    
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,400italic,700'/>
+    
+    <script src="#{resource['app/global/vendor/modernizr/modernizr.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/breakpoints/breakpoints.min.js']}"></script>
+
+     <f:metadata>
+            <f:viewAction action="#{customerExtraworkPoController.prepareCreate}"/>
+        </f:metadata>
+        <style>
+            .ui-growl{top: 100px;}
+            .ui-fileupload .start {
+            display: none;
+            }
+            .ui-fileupload .cancel {
+                display: none;
+            }
+            .ui-fileupload .progress {
+                display: none;
+            }
+            .ui-fileupload-progress {
+                display: none;
+            }
+              .ui-fileupload-content .ui-progressbar {
+                width: 0px;
+                height: 0px;
+                margin: 0
+                }
+        </style>
+        
+    </h:head>
+    <h:body>
+    <FT:TopBar/>
+    <FT:NavigationMenu/>
+    <!-- Page -->
+    <div class="page animsition">
+    <h:form id="createVfPoExtraWorkForm">
+    <p:growl id="growl"/>
+    <div class="page-content">
+      <div class="row">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="panel panel-bordered">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Create Customer PO Extra work - Categorization</h3>
+                </div>
+              <div class="panel-body container-fluid">
+                  <div class="row">
+                      <div class="col-md-6 col-sm-6 col-xs-6">
+                          <div class="form-group">
+                    <label class="control-label" for="createdBy">Creator:</label>
+                    <h:outputText id="createdBy" class="form-control" value="#{customerExtraworkPoController.selected.creator.userName}"/>
+                    </div>
+                      </div>
+                      <div class="col-md-6 col-sm-6 col-xs-6">
+                       <div class="form-group">
+                    <label class="control-label" for="poNumber">PO Number:</label>
+                    <h:inputText id="poNumber" class="form-control" value="#{customerExtraworkPoController.selected.poNumber}"/>
+                    </div>   
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-6 col-sm-6 col-xs-6">
+                       <div class="form-group">
+                    <label class="control-label" for="ewDomain">Domain:</label>
+                    <h:selectOneMenu id="ewDomain"
+                                     value="#{customerExtraworkPoController.selected.domainName}"
+                                             styleClass="form-control"
+                                             required="true"
+                                             requiredMessage="Domain can't be empty">
+                                <f:selectItem itemLabel="" itemValue="#{null}"/>
+                                <f:selectItems value="#{domainsController.itemsAvailableSelectOne}" 
+                                               var="domainItem"
+                                               itemValue="#{domainItem.domainName}"
+                                               itemLabel="#{domainItem.domainName}"/>
+                    </h:selectOneMenu>
+                    </div>   
+                      </div>
+                      <div class="col-md-6 col-sm-6 col-xs-6">
+                         <div class="form-group">
+                    <label class="control-label" for="ewSubDomain">Sub_Domain:</label>
+                    <h:selectOneMenu id="ewSubDomain"
+                                     value="#{customerExtraworkPoController.selected.subDomain}"
+                                             styleClass="form-control"
+                                             required="true"
+                                             requiredMessage="SubDomain can't be empty">
+                                <f:selectItem itemLabel="" itemValue="#{null}"/>
+                                <f:selectItems value="#{subDomainController.itemsAvailableSelectOne}" 
+                                               var="subdomainItem"
+                                               itemValue="#{subdomainItem.subdomainName}"
+                                               itemLabel="#{subdomainItem.subdomainName}"/>
+                    </h:selectOneMenu>
+                    </div> 
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-6 col-sm-6 col-xs-6">
+                          <div class="form-group">
+                    <label class="control-label" for="ewDate">Date:</label>
+                    <p:calendar id="ewDate" 
+                                value="#{customerExtraworkPoController.selected.poDate}"
+                                required="true"
+                                styleClass="form-control"
+                                requiredMessage="Extrawork Date can't be empty">
+                    </p:calendar>
+                    </div>
+                      </div>
+                      <div class="col-md-6 col-sm-6 col-xs-6">
+                       <div class="form-group">
+                    <label class="control-label" for="poOwner">Owner:</label>
+                    <h:selectOneMenu id="poOwner"
+                                     value="#{customerExtraworkPoController.selected.poOwner}"
+                                             styleClass="form-control"
+                                             required="true"
+                                             requiredMessage="owner can't be empty">
+                                <f:selectItem itemLabel="" itemValue="#{null}"/>
+                                <f:selectItems value="#{customerPoChasersController.itemsAvailableSelectOne}" 
+                                               var="userItem"
+                                               itemValue="#{userItem.chaserName}"
+                                               itemLabel="#{userItem.chaserName}"/>
+                    </h:selectOneMenu>
+                    </div>   
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-6 col-sm-6 col-xs-6">
+                     <div class="form-group">
+                    <label class="control-label" for="poNetwork">Network:</label>
+                    <h:selectOneMenu id="poNetwork"
+                                     value="#{customerExtraworkPoController.selected.networkName}"
+                                             styleClass="form-control"
+                                             required="true"
+                                             requiredMessage="network can't be empty">
+                                <f:selectItem itemLabel="" itemValue="#{null}"/>
+                                <f:selectItems value="#{poNetworkController.itemsAvailableSelectOne}" 
+                                               var="networkItem"
+                                               itemValue="#{networkItem.networkName}"
+                                               itemLabel="#{networkItem.networkName}"/>
+                    </h:selectOneMenu>
+                    </div> 
+                      </div>
+                      <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group">
+                    <label class="control-label" for="poTaxes">Taxes:</label>
+                    <p:inputNumber id="poTaxes" 
+                                   class="form-control" 
+                                   symbol=" %" 
+                                   symbolPosition="s"
+                                   decimalSeparator="." thousandSeparator=","
+                                   value="#{customerExtraworkPoController.selected.taxesValue}">
+                        <p:ajax  oncomplete=" removeClasses();"/>
+                    </p:inputNumber>
+                    </div>
+                    </div>
+                  </div>
+              </div>
+                </div>
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-6">
+             <div class="panel panel-bordered">
+                <div class="panel-heading">
+                  <h3 class="panel-title">PO Details</h3>
+                </div>
+              <div class="panel-body container-fluid">
+                  <div class="form-group">
+                    <label class="control-label" for="ewCodeDescription">Description:</label>
+                    <h:inputTextarea id="ewCodeDescription" required="true" requiredMessage="Description can't be empty" 
+                                 class="form-control" value="#{customerExtraworkPoController.selected.poDescription}"
+                                 />
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group">
+                    <label class="control-label" for="factor">Factor:</label>
+                    <p:inputNumber id="factor" 
+                                   class="form-control" 
+                                   symbol=" Unit" 
+                                   symbolPosition="s"
+                                   decimalSeparator="." thousandSeparator=","
+                                   value="#{customerExtraworkPoController.selected.factor}"
+                                   required="true"
+                                   requiredMessage="Factor can't be empty">
+                        <p:ajax update="poValue" listener="#{customerExtraworkPoController.updateValues()}" oncomplete=" removeClasses();"/>
+                    </p:inputNumber>
+                    </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group">
+                    <label class="control-label" for="serviceValue">Service Value:</label>
+                    <p:inputNumber id="serviceValue" 
+                                   class="form-control" 
+                                   symbol=" EGP" 
+                                   symbolPosition="s"
+                                   decimalSeparator="." thousandSeparator=","
+                                   value="#{customerExtraworkPoController.selected.serviceValue}"
+                                   required="true"
+                                   requiredMessage="Service Value can't be empty">
+                        <p:ajax update="poValue" listener="#{customerExtraworkPoController.updateValues()}" oncomplete=" removeClasses();"/>
+                    </p:inputNumber>
+                    </div>   
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label" for="poValue">PO Value:</label>
+                    <p:inputNumber id="poValue" 
+                                   class="form-control" 
+                                   symbol=" EGP" 
+                                   symbolPosition="s"
+                                   decimalSeparator="." thousandSeparator=","
+                                   value="#{customerExtraworkPoController.selected.poValue}"
+                                   required="true"
+                                   requiredMessage="PO Value can't be empty"
+                                   disabled="true"/>
+                    </div>
+                    </div>
+              </div>
+                </div>
+              <h:commandButton id="createBtn" 
+                                     value="Create"
+                                     class="btn btn-block btn-success"
+                                     action="#{customerExtraworkPoController.createVFPo}"
+                                     />
+          </div>
+    </div>
+    </h:form>
+    </div>
+    <!-- End Page -->
+    <FT:Footer/>
+  
+
+    <script src="#{resource['app/global/vendor/bootstrap/bootstrap.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/animsition/animsition.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/asscroll/jquery-asScroll.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/mousewheel/jquery.mousewheel.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/asscrollable/jquery.asScrollable.all.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/ashoverscroll/jquery-asHoverScroll.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/waves/waves.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/switchery/switchery.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/intro-js/intro.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/screenfull/screenfull.min.js']}"></script>
+    <script src="#{resource['app/global/vendor/slidepanel/jquery-slidePanel.min.js']}"></script>
+    <script src="#{resource['app/global/js/core.min.js']}"></script>
+    <script src="#{resource['app/assets/js/site.min.js']}"></script>
+    <script src="#{resource['app/assets/js/sections/menu.min.js']}"></script>
+    <script src="#{resource['app/assets/js/sections/menubar.min.js']}"></script>
+    <script src="#{resource['app/assets/js/sections/gridmenu.min.js']}"></script>
+    <script src="#{resource['app/assets/js/sections/sidebar.min.js']}"></script>
+    <script src="#{resource['app/global/js/configs/config-colors.min.js']}"></script>
+    <script src="#{resource['app/assets/js/configs/config-tour.min.js']}"></script>
+    <script src="#{resource['app/global/js/components/asscrollable.min.js']}"></script>
+    <script src="#{resource['app/global/js/components/animsition.min.js']}"></script>
+    <script src="#{resource['app/global/js/components/slidepanel.min.js']}"></script>
+    <script src="#{resource['app/global/js/components/switchery.min.js']}"></script>
+    <script src="#{resource['app/global/js/components/tabs.min.js']}"></script>
+
+    <script>
+       //<![CDATA[
+    Breakpoints();
+    (function(document, window, $) {
+      'use strict';
+
+      var Site = window.Site;
+      $(document).ready(function() {
+        Site.run();
+      });
+    })(document, window, jQuery);
+    removeClasses();
+     //]]>
+     function removeClasses(){
+             $('#createVfPoExtraWorkForm\\:ewDate')
+                    .removeClass();
+             $('#createVfPoExtraWorkForm\\:ewDate_input')
+                    .removeClass()
+                    .addClass( "form-control" );
+            
+            $('#createVfPoExtraWorkForm\\:poTaxes')
+                    .removeClass();
+            $('#createVfPoExtraWorkForm\\:poTaxes_input') 
+                    .removeClass()
+                    .addClass( "form-control" );
+           
+            $('#createVfPoExtraWorkForm\\:factor')
+                    .removeClass();
+            $('#createVfPoExtraWorkForm\\:factor_input') 
+                    .removeClass()
+                    .addClass( "form-control" );
+            
+            $('#createVfPoExtraWorkForm\\:serviceValue')
+                    .removeClass();
+            $('#createVfPoExtraWorkForm\\:serviceValue_input') 
+                    .removeClass()
+                    .addClass( "form-control" );
+           
+            $('#createVfPoExtraWorkForm\\:poValue')
+                    .removeClass();
+            $('#createVfPoExtraWorkForm\\:poValue_input') 
+                    .removeClass()
+                    .addClass( "form-control" );
+        }
+  </script>
+    </h:body>
+</html>
+
