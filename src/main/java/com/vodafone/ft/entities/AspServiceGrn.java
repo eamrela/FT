@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -73,8 +75,8 @@ public class AspServiceGrn implements Serializable {
     @JoinColumn(name = "creator", referencedColumnName = "user_name")
     @ManyToOne(optional = false)
     private Users creator;
-    @ManyToMany(mappedBy = "aspServiceGrnCollection")
-    private Collection<CostOfSales> costOfSalesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "aspServiceGrn")
+    private Collection<CostOfSalesJAspServiceGrn> costOfSalesJAspServiceGrnCollection;
 
     public AspServiceGrn() {
     }
@@ -172,11 +174,12 @@ public class AspServiceGrn implements Serializable {
     }
     
     @XmlTransient
-    public Collection<CostOfSales> getCostOfSalesCollection() {
-        return costOfSalesCollection;
+    public Collection<CostOfSalesJAspServiceGrn> getCostOfSalesJAspServiceGrnCollection() {
+        return costOfSalesJAspServiceGrnCollection;
     }
 
-    public void setCostOfSalesCollection(Collection<CostOfSales> costOfSalesCollection) {
-        this.costOfSalesCollection = costOfSalesCollection;
+    public void setCostOfSalesJAspServiceGrnCollection(Collection<CostOfSalesJAspServiceGrn> costOfSalesJAspServiceGrnCollection) {
+        this.costOfSalesJAspServiceGrnCollection = costOfSalesJAspServiceGrnCollection;
     }
+
 }

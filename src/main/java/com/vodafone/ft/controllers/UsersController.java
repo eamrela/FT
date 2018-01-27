@@ -87,6 +87,7 @@ public class UsersController implements Serializable {
     }
 
     public String getLoggedInUserRole() {
+        getLoggedInUser();
         if(loggedInUserRole==null){
             if(loggedInUser.getUserRolesCollection()!=null){
                 Object[] roles = getLoggedInUser().getUserRolesCollection().toArray();

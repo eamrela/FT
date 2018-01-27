@@ -1,0 +1,247 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+       
+        <p:dialog id="settleDlgNsId" modal="true" widgetVar="settleDlgNs" closeOnEscape="true" resizable="false" 
+                  height="600" width="1000" appendTo="@(body)" header="Settle (NS)">
+            <h:form id="settleNsForm">
+
+                <h:panelGroup rendered="#{netSalesController.selectedUserNs!=null}">
+                <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>Available Service Invoices</label>
+                    <p:dataTable id="datalistServicePo"
+                                             var="poSr" 
+                                             value="#{netSalesController.availableServiceWorkInvoice}"
+                                             paginator="true"
+                                             paginatorPosition="bottom"
+                                             rows="6"
+                                             rowKey="#{poSr.id}"
+                                             selectionMode="single"
+                                             selection="#{netSalesController.selectedSRINVOICE}">
+                        <p:ajax event="rowDblselect"   
+                                listener="#{netSalesController.addSelectedServicePo}"
+                                update=":settleNsForm:datalistServicePo,:settleNsForm:datalistSelectedServicePo"/>
+                        <p:column headerText="PO#" 
+                                        style="font-size: 9px;">
+                                <h:outputText value="#{poSr.poNumer.poNumber}" />
+                        </p:column>
+                        <p:column headerText="Invoice#" 
+                                        style="font-size: 9px;">
+                                <h:outputText value="#{poSr.invoiceNumber}" />
+                        </p:column>
+                        <p:column headerText="Date" 
+                                    style="font-size: 9px;">
+                              <h:outputText value="#{poSr.invoiceDate}">
+                                  <f:convertDateTime pattern="yyyy/MM/dd"/>
+                              </h:outputText>
+                        </p:column>
+                        <p:column headerText="Domain" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poSr.poNumer.domainName}" />
+                        </p:column>
+                        <p:column headerText="Subdomain" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poSr.poNumer.subDomain}" />
+                        </p:column>
+                        <p:column headerText="Description" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poSr.poNumer.poDescription}" />
+                        </p:column>
+                        <p:column headerText="invoice Value" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poSr.invoiceValue}">
+                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Remaining" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poSr.poNumer.remainingFromPo}">
+                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                            </h:outputText>
+                        </p:column>
+                        </p:dataTable>
+                </div>
+               <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>Selected Service Invoices</label>
+                    <p:dataTable id="datalistSelectedServicePo"
+                                             var="poSSr" 
+                                             value="#{netSalesController.selectedServiceWorkInvoice}"
+                                             paginator="true"
+                                             paginatorPosition="bottom"
+                                             rows="6"
+                                             rowKey="#{poSSr.netsalesJCustomerServiceInvoicePK}"
+                                             selectionMode="single"
+                                             selection="#{netSalesController.selectedJSRINVOICE}">
+                        <p:ajax event="rowDblselect"   
+                                listener="#{netSalesController.removeSelectedServicePo}"
+                                update=":settleNsForm:datalistServicePo,:settleNsForm:datalistSelectedServicePo"/>
+                        <p:column headerText="PO#" 
+                                        style="font-size: 9px;">
+                            <h:outputText value="#{poSSr.customerServiceInvoice.poNumer.poNumber}" />
+                        </p:column>
+                        <p:column headerText="Invoice#" 
+                                        style="font-size: 9px;">
+                            <h:outputText value="#{poSSr.customerServiceInvoice.invoiceNumber}" />
+                        </p:column>
+                        <p:column headerText="Date" 
+                                    style="font-size: 9px;">
+                            <h:outputText value="#{poSSr.customerServiceInvoice.invoiceDate}">
+                                  <f:convertDateTime pattern="yyyy/MM/dd"/>
+                              </h:outputText>
+                        </p:column>
+                        <p:column headerText="Description" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poSSr.customerServiceInvoice.poNumer.poDescription}" />
+                        </p:column>
+                        <p:column headerText="Invoice Value" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poSSr.customerServiceInvoice.invoiceValue}">
+                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Settle %">
+                            <p:spinner min="0" max="1" stepFactor="0.05" value="#{poSSr.settlePercentage}" size="1" >
+                                <p:ajax update="settlement"/>
+                            </p:spinner>
+                        </p:column>
+                        <p:column headerText="Settlement">
+                            <h:outputText id="settlement" value="#{(poSSr.settlePercentage * poSSr.customerServiceInvoice.invoiceValue)}">
+                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                            </h:outputText>
+                        </p:column>
+                        </p:dataTable>
+                </div>
+                
+                </div>
+                <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>Available Extra Work Invoices</label>
+                    <p:dataTable id="datalistExtraworkPo"
+                                             var="poEw" 
+                                             value="#{netSalesController.availableExtraWorkInvoice}"
+                                             paginator="true"
+                                             paginatorPosition="bottom"
+                                             rows="6"
+                                             rowKey="#{poEw.id}"
+                                             selectionMode="single"
+                                             selection="#{netSalesController.selectedEWINVOICE}">
+                        <p:ajax event="rowDblselect"   
+                                listener="#{netSalesController.addSelectedExtaworkPo}"
+                                update=":settleNsForm:datalistExtraworkPo,:settleNsForm:datalistSelectedExtraworkPo"/>
+                        
+                        <p:column headerText="PO#" 
+                                        style="font-size: 9px;">
+                            <h:outputText value="#{poEw.poNumer.poNumber}" />
+                        </p:column>
+                        <p:column headerText="Invoice#" 
+                                        style="font-size: 9px;">
+                            <h:outputText value="#{poEw.invoiceNumber}" />
+                        </p:column>
+                        <p:column headerText="Date" 
+                                    style="font-size: 9px;">
+                            <h:outputText value="#{poEw.invoiceDate}">
+                                  <f:convertDateTime pattern="yyyy/MM/dd"/>
+                              </h:outputText>
+                        </p:column>
+                        <p:column headerText="Domain" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poEw.poNumer.domainName}" />
+                        </p:column>
+                        <p:column headerText="Subdomain" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poEw.poNumer.subDomain}" />
+                        </p:column>
+                        <p:column headerText="Description" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poEw.poNumer.poDescription}" />
+                        </p:column>
+                        <p:column headerText="invoice Value" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poEw.invoiceValue}">
+                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Remaining" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poEw.poNumer.remainingFromPo}">
+                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                            </h:outputText>
+                        </p:column>
+                        </p:dataTable>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>Selected Extra Work Invoices</label>
+                    <p:dataTable id="datalistSelectedExtraworkPo"
+                                             var="poSEw" 
+                                             value="#{netSalesController.selectedExtraWorkInvoice}"
+                                             paginator="true"
+                                             paginatorPosition="bottom"
+                                             rows="6"
+                                             rowKey="#{poSEw.netsalesJCustomerExtraworkInvoicePK}"
+                                             selectionMode="single"
+                                             selection="#{netSalesController.selectedJSRINVOICE}">
+                        <p:ajax event="rowDblselect"   
+                                listener="#{netSalesController.removeSelectedExtaworkPo}"
+                                update=":settleNsForm:datalistExtraworkPo,:settleNsForm:datalistSelectedExtraworkPo"/>
+                        <p:column headerText="PO#" 
+                                        style="font-size: 9px;">
+                            <h:outputText value="#{poSEw.customerExtraworkInvoice.poNumer.poNumber}" />
+                        </p:column>
+                        <p:column headerText="Invoice#" 
+                                        style="font-size: 9px;">
+                            <h:outputText value="#{poSEw.customerExtraworkInvoice.invoiceNumber}" />
+                        </p:column>
+                        <p:column headerText="Date" 
+                                    style="font-size: 9px;">
+                            <h:outputText value="#{poSEw.customerExtraworkInvoice.invoiceDate}">
+                                  <f:convertDateTime pattern="yyyy/MM/dd"/>
+                              </h:outputText>
+                        </p:column>
+                        <p:column headerText="Description" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poSEw.customerExtraworkInvoice.poNumer.poDescription}" />
+                        </p:column>
+                        <p:column headerText="Invoice Value" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poSEw.customerExtraworkInvoice.invoiceValue}">
+                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Settle %">
+                            <p:spinner min="0" max="1" stepFactor="0.05" value="#{poSEw.settlePercentage}" size="1" >
+                                <p:ajax update="settlement"/>
+                            </p:spinner>
+                        </p:column>
+                        <p:column headerText="Settlement">
+                            <h:outputText id="settlement" value="#{(poSEw.settlePercentage * poSEw.customerExtraworkInvoice.invoiceValue)}">
+                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                            </h:outputText>
+                        </p:column>
+                        </p:dataTable>
+                </div>
+                </div>   
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <p:commandButton class="btn btn-block btn-success" actionListener="#{netSalesController.updateEdit}" value="Settle"
+                                     update=":nsForm:datalistNs,:nsForm:growl" 
+                                     oncomplete="handleSubmit(args, 'settleDlgNs');"/>
+
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                     <p:commandButton class="btn btn-block btn-warning" value="Cancel" onclick="settleDlgNs.hide()"/>
+                </div>
+            </div>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+     
+    </ui:composition>
+</html>
+

@@ -38,7 +38,7 @@ public class AspExtraworkGrnFacade extends AbstractFacade<AspExtraworkGrn> {
     public List<AspExtraworkGrn> findSettelementsGRNs(CostOfSales selectedUserCos) {
         return em.createNativeQuery(" select * from asp_extrawork_grn " +
                                     " where id not in (select grn_id "
-                                    + " from cost_of_sales_j_asp_extawork_grn where cos_id = "+selectedUserCos.getCostId()+") ", AspExtraworkGrn.class).getResultList();
+                                    + " from cost_of_sales_j_asp_extrawork_grn where cos_id = "+selectedUserCos.getCostId()+") ", AspExtraworkGrn.class).getResultList();
     }
     
 }

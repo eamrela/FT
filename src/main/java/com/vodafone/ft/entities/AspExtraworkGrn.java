@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,6 +21,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -73,8 +75,8 @@ public class AspExtraworkGrn implements Serializable {
     @JoinColumn(name = "creator", referencedColumnName = "user_name")
     @ManyToOne(optional = false , fetch = FetchType.EAGER)
     private Users creator;
-    @ManyToMany(mappedBy = "aspExtraworkGrnCollection")
-    private Collection<CostOfSales> costOfSalesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "aspExtraworkGrn")
+    private Collection<CostOfSalesJAspExtraworkGrn> costOfSalesJAspExtraworkGrnCollection;
     
     public AspExtraworkGrn() {
     }
@@ -173,11 +175,11 @@ public class AspExtraworkGrn implements Serializable {
     }
     
     @XmlTransient
-    public Collection<CostOfSales> getCostOfSalesCollection() {
-        return costOfSalesCollection;
+    public Collection<CostOfSalesJAspExtraworkGrn> getCostOfSalesJAspExtraworkGrnCollection() {
+        return costOfSalesJAspExtraworkGrnCollection;
     }
 
-    public void setCostOfSalesCollection(Collection<CostOfSales> costOfSalesCollection) {
-        this.costOfSalesCollection = costOfSalesCollection;
+    public void setCostOfSalesJAspExtraworkGrnCollection(Collection<CostOfSalesJAspExtraworkGrn> costOfSalesJAspExtraworkGrnCollection) {
+        this.costOfSalesJAspExtraworkGrnCollection = costOfSalesJAspExtraworkGrnCollection;
     }
 }

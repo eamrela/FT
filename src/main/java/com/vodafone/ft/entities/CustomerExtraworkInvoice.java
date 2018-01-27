@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -60,8 +62,8 @@ public class CustomerExtraworkInvoice implements Serializable {
     @Temporal(TemporalType.DATE)
     @Column(name = "creation_date")
     private Date creationDate;
-    @ManyToMany(mappedBy = "customerExtraworkInvoiceCollection")
-    private Collection<NetSales> netSalesCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerExtraworkInvoice")
+    private Collection<NetsalesJCustomerExtraworkInvoice> netsalesJCustomerExtraworkInvoiceCollection;
     
     @JoinColumn(name = "creator", referencedColumnName = "user_name")
     @ManyToOne
@@ -159,11 +161,11 @@ public class CustomerExtraworkInvoice implements Serializable {
     }
     
     @XmlTransient
-    public Collection<NetSales> getNetSalesCollection() {
-        return netSalesCollection;
+    public Collection<NetsalesJCustomerExtraworkInvoice> getNetsalesJCustomerExtraworkInvoiceCollection() {
+        return netsalesJCustomerExtraworkInvoiceCollection;
     }
 
-    public void setNetSalesCollection(Collection<NetSales> netSalesCollection) {
-        this.netSalesCollection = netSalesCollection;
+    public void setNetsalesJCustomerExtraworkInvoiceCollection(Collection<NetsalesJCustomerExtraworkInvoice> netsalesJCustomerExtraworkInvoiceCollection) {
+        this.netsalesJCustomerExtraworkInvoiceCollection = netsalesJCustomerExtraworkInvoiceCollection;
     }
 }

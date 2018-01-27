@@ -8,16 +8,15 @@ package com.vodafone.ft.entities;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
@@ -35,7 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "NetSales.findAll", query = "SELECT n FROM NetSales n")
     , @NamedQuery(name = "NetSales.findByNetsalesId", query = "SELECT n FROM NetSales n WHERE n.netsalesId = :netsalesId")
     , @NamedQuery(name = "NetSales.findByDescription", query = "SELECT n FROM NetSales n WHERE n.description = :description")
-    , @NamedQuery(name = "NetSales.findByNetsalesAmount", query = "SELECT n FROM NetSales n WHERE n.netsalesAmount = :netsalesAmount")})
+    , @NamedQuery(name = "NetSales.findByNetsalesAmount", query = "SELECT n FROM NetSales n WHERE n.netsalesAmount = :netsalesAmount")
+    , @NamedQuery(name = "NetSales.findByOriginalAmount", query = "SELECT n FROM NetSales n WHERE n.originalAmount = :originalAmount")
+    , @NamedQuery(name = "NetSales.findByCategory", query = "SELECT n FROM NetSales n WHERE n.category = :category")})
 public class NetSales implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,28 +48,21 @@ public class NetSales implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "description")
     private String description;
-    @Size(max = 2147483647)
-    @Column(name = "category")
-    private String category;
     @Column(name = "netsales_amount")
     private Double netsalesAmount;
     @Column(name = "original_amount")
     private Double originalAmount;
+    @Size(max = 2147483647)
+    @Column(name = "category")
+    private String category;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "netSales")
+    private Collection<NetsalesJCustomerServiceInvoice> netsalesJCustomerServiceInvoiceCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "netSales")
+    private Collection<NetsalesJCustomerExtraworkInvoice> netsalesJCustomerExtraworkInvoiceCollection;
 
     @Transient
     private Double invoiceIssued;
     
-    @JoinTable(name = "netsales_j_customer_extrawork_invoice", joinColumns = {
-        @JoinColumn(name = "ns_id", referencedColumnName = "netsales_id")}, inverseJoinColumns = {
-        @JoinColumn(name = "invoice_id", referencedColumnName = "id")})
-    @ManyToMany
-    private Collection<CustomerExtraworkInvoice> customerExtraworkInvoiceCollection;
-    @JoinTable(name = "netsales_j_customer_service_invoice", joinColumns = {
-        @JoinColumn(name = "ns_id", referencedColumnName = "netsales_id")}, inverseJoinColumns = {
-        @JoinColumn(name = "invoice_id", referencedColumnName = "id")})
-    @ManyToMany
-    private Collection<CustomerServiceInvoice> customerServiceInvoiceCollection;
-
     public NetSales() {
     }
 
@@ -100,41 +94,38 @@ public class NetSales implements Serializable {
         this.netsalesAmount = netsalesAmount;
     }
 
-    
-    @Transient
-    public Double getInvoiceIssued() {
-        invoiceIssued = 0.0;
-        if(getCustomerServiceInvoiceCollection()!=null){
-            Object[] poSr = getCustomerServiceInvoiceCollection().toArray();
-                    for (Object poSrMd : poSr) {
-                        invoiceIssued += ((CustomerServiceInvoice)poSrMd).getInvoiceValue();
-                    }
-        }
-        if(getCustomerExtraworkInvoiceCollection()!=null){
-            Object[] poEw = getCustomerExtraworkInvoiceCollection().toArray();
-                    for (Object poEwMd : poEw) {
-                        invoiceIssued += ((CustomerExtraworkInvoice)poEwMd).getInvoiceValue();
-                    }
-        }
-        return invoiceIssued;
+    public Double getOriginalAmount() {
+        return originalAmount;
+    }
+
+    public void setOriginalAmount(Double originalAmount) {
+        this.originalAmount = originalAmount;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     @XmlTransient
-    public Collection<CustomerExtraworkInvoice> getCustomerExtraworkInvoiceCollection() {
-        return customerExtraworkInvoiceCollection;
+    public Collection<NetsalesJCustomerServiceInvoice> getNetsalesJCustomerServiceInvoiceCollection() {
+        return netsalesJCustomerServiceInvoiceCollection;
     }
 
-    public void setCustomerExtraworkInvoiceCollection(Collection<CustomerExtraworkInvoice> customerExtraworkInvoiceCollection) {
-        this.customerExtraworkInvoiceCollection = customerExtraworkInvoiceCollection;
+    public void setNetsalesJCustomerServiceInvoiceCollection(Collection<NetsalesJCustomerServiceInvoice> netsalesJCustomerServiceInvoiceCollection) {
+        this.netsalesJCustomerServiceInvoiceCollection = netsalesJCustomerServiceInvoiceCollection;
     }
 
     @XmlTransient
-    public Collection<CustomerServiceInvoice> getCustomerServiceInvoiceCollection() {
-        return customerServiceInvoiceCollection;
+    public Collection<NetsalesJCustomerExtraworkInvoice> getNetsalesJCustomerExtraworkInvoiceCollection() {
+        return netsalesJCustomerExtraworkInvoiceCollection;
     }
 
-    public void setCustomerServiceInvoiceCollection(Collection<CustomerServiceInvoice> customerServiceInvoiceCollection) {
-        this.customerServiceInvoiceCollection = customerServiceInvoiceCollection;
+    public void setNetsalesJCustomerExtraworkInvoiceCollection(Collection<NetsalesJCustomerExtraworkInvoice> netsalesJCustomerExtraworkInvoiceCollection) {
+        this.netsalesJCustomerExtraworkInvoiceCollection = netsalesJCustomerExtraworkInvoiceCollection;
     }
 
     @Override
@@ -159,25 +150,26 @@ public class NetSales implements Serializable {
 
     @Override
     public String toString() {
-        return "new3.NetSales[ netsalesId=" + netsalesId + " ]";
-    }
-
-    public Double getOriginalAmount() {
-        return originalAmount;
-    }
-
-    public void setOriginalAmount(Double originalAmount) {
-        this.originalAmount = originalAmount;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
+        return "com.vodafone.ft.entities.NetSales[ netsalesId=" + netsalesId + " ]";
     }
     
-    
-    
+    @Transient
+    public Double getInvoiceIssued() {
+        invoiceIssued = 0.0;
+        if(getNetsalesJCustomerServiceInvoiceCollection()!=null){
+            Object[] poSr = getNetsalesJCustomerServiceInvoiceCollection().toArray();
+                    for (Object poSrMd : poSr) {
+                        invoiceIssued += ((NetsalesJCustomerServiceInvoice)poSrMd).getCustomerServiceInvoice().getInvoiceValue()
+                                * ((NetsalesJCustomerServiceInvoice)poSrMd).getSettlePercentage();
+                    }
+        }
+        if(getNetsalesJCustomerExtraworkInvoiceCollection()!=null){
+            Object[] poEw = getNetsalesJCustomerExtraworkInvoiceCollection().toArray();
+                    for (Object poEwMd : poEw) {
+                        invoiceIssued += ((NetsalesJCustomerExtraworkInvoice)poEwMd).getCustomerExtraworkInvoice().getInvoiceValue()
+                                * ((NetsalesJCustomerExtraworkInvoice)poEwMd).getSettlePercentage();
+                    }
+        }
+        return invoiceIssued;
+    }
 }

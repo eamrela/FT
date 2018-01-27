@@ -8,10 +8,12 @@ import com.vodafone.ft.beans.NetSalesFacade;
 import com.vodafone.ft.controllers.util.JsfUtil;
 import com.vodafone.ft.controllers.util.JsfUtil.PersistAction;
 import com.vodafone.ft.entities.CustomerExtraworkInvoice;
-import com.vodafone.ft.entities.CustomerExtraworkPo;
 import com.vodafone.ft.entities.CustomerServiceInvoice;
-import com.vodafone.ft.entities.CustomerServicePo;
 import com.vodafone.ft.entities.NetSales;
+import com.vodafone.ft.entities.NetsalesJCustomerExtraworkInvoice;
+import com.vodafone.ft.entities.NetsalesJCustomerExtraworkInvoicePK;
+import com.vodafone.ft.entities.NetsalesJCustomerServiceInvoice;
+import com.vodafone.ft.entities.NetsalesJCustomerServiceInvoicePK;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,12 +39,17 @@ public class NetSalesController implements Serializable {
     private List<NetSales> items = null;
     private NetSales selected;
     private NetSales selectedUserNs;
+    
     private List<CustomerExtraworkInvoice> availableExtraWorkInvoice;
     private List<CustomerServiceInvoice> availableServiceWorkInvoice;
-    private List<CustomerExtraworkInvoice> selectedExtraWorkInvoice;
+    
+    private List<NetsalesJCustomerExtraworkInvoice> selectedExtraWorkInvoice;
     private CustomerExtraworkInvoice selectedEWINVOICE;
-    private List<CustomerServiceInvoice> selectedServiceWorkInvoice;
+    private NetsalesJCustomerExtraworkInvoice selectedJEWINVOICE;
+    
+    private List<NetsalesJCustomerServiceInvoice> selectedServiceWorkInvoice;
     private CustomerServiceInvoice selectedSRINVOICE;
+    private NetsalesJCustomerServiceInvoice selectedJSRINVOICE;
     
     @Inject
     private CustomerExtraworkInvoiceController customerExtaWorkInvoiceController;
@@ -92,23 +99,30 @@ public class NetSalesController implements Serializable {
     
      public void updateEdit(){
         selected = selectedUserNs;
-        for (CustomerExtraworkInvoice selectedExtraWorkInvoice1 : selectedExtraWorkInvoice) {
-            if(selected.getCustomerExtraworkInvoiceCollection()!=null){
-                    selected.getCustomerExtraworkInvoiceCollection().add(selectedExtraWorkInvoice1);
+        selected.setNetsalesAmount(selected.getOriginalAmount()-selected.getInvoiceIssued());
+        for (NetsalesJCustomerExtraworkInvoice selectedExtraWorkInvoice1 : selectedExtraWorkInvoice) {
+           if(selectedExtraWorkInvoice1.getSettlePercentage()!=null){
+            if(selected.getNetsalesJCustomerExtraworkInvoiceCollection()!=null){
+                    selected.getNetsalesJCustomerExtraworkInvoiceCollection().add(selectedExtraWorkInvoice1);
             }else{
-                selected.setCustomerExtraworkInvoiceCollection(new ArrayList<CustomerExtraworkInvoice>());
-                selected.getCustomerExtraworkInvoiceCollection().add(selectedExtraWorkInvoice1);
+                selected.setNetsalesJCustomerExtraworkInvoiceCollection(new ArrayList<NetsalesJCustomerExtraworkInvoice>());
+                selected.getNetsalesJCustomerExtraworkInvoiceCollection().add(selectedExtraWorkInvoice1);
             }
-            selected.setNetsalesAmount(selected.getNetsalesAmount()-selectedExtraWorkInvoice1.getInvoiceValue());
+            selected.setNetsalesAmount(selected.getNetsalesAmount()-(selectedExtraWorkInvoice1.getCustomerExtraworkInvoice().getInvoiceValue()
+                    * selectedExtraWorkInvoice1.getSettlePercentage()));
+           }
         }
-        for (CustomerServiceInvoice selectedServieInvoice1 : selectedServiceWorkInvoice) {
-            if(selected.getCustomerServiceInvoiceCollection()!=null){
-                    selected.getCustomerServiceInvoiceCollection().add(selectedServieInvoice1);
+        for (NetsalesJCustomerServiceInvoice selectedServieInvoice1 : selectedServiceWorkInvoice) {
+           if(selectedServieInvoice1.getSettlePercentage()!=null){
+            if(selected.getNetsalesJCustomerServiceInvoiceCollection()!=null){
+                    selected.getNetsalesJCustomerServiceInvoiceCollection().add(selectedServieInvoice1);
             }else{
-                selected.setCustomerServiceInvoiceCollection(new ArrayList<CustomerServiceInvoice>());
-                selected.getCustomerServiceInvoiceCollection().add(selectedServieInvoice1);
+                selected.setNetsalesJCustomerServiceInvoiceCollection(new ArrayList<NetsalesJCustomerServiceInvoice>());
+                selected.getNetsalesJCustomerServiceInvoiceCollection().add(selectedServieInvoice1);
             }
-            selected.setNetsalesAmount(selected.getNetsalesAmount()-selectedServieInvoice1.getInvoiceValue());
+            selected.setNetsalesAmount(selected.getNetsalesAmount()-(selectedServieInvoice1.getCustomerServiceInvoice().getInvoiceValue()
+                    * selectedServieInvoice1.getSettlePercentage()));
+           }
         }
         update();
     }
@@ -203,29 +217,39 @@ public class NetSalesController implements Serializable {
 
     public void addSelectedServicePo(){
         if(selectedSRINVOICE!=null){
-            selectedServiceWorkInvoice.add(selectedSRINVOICE);
+            NetsalesJCustomerServiceInvoice ns = new NetsalesJCustomerServiceInvoice();
+            ns.setCustomerServiceInvoice(selectedSRINVOICE);
+            ns.setNetSales(selectedUserNs);
+            ns.setNetsalesJCustomerServiceInvoicePK(new NetsalesJCustomerServiceInvoicePK(ns.getNetSales().getNetsalesId(),
+                    ns.getCustomerServiceInvoice().getId()));
+            selectedServiceWorkInvoice.add(ns);
             availableServiceWorkInvoice.remove(selectedSRINVOICE);
         }
     }
     
     public void addSelectedExtaworkPo(){
         if(selectedEWINVOICE!=null){
-            selectedExtraWorkInvoice.add(selectedEWINVOICE);
+            NetsalesJCustomerExtraworkInvoice ns = new NetsalesJCustomerExtraworkInvoice();
+            ns.setCustomerExtraworkInvoice(selectedEWINVOICE);
+            ns.setNetSales(selectedUserNs);
+            ns.setNetsalesJCustomerExtraworkInvoicePK(new NetsalesJCustomerExtraworkInvoicePK(ns.getNetSales().getNetsalesId(),
+                    ns.getCustomerExtraworkInvoice().getId()));
+            selectedExtraWorkInvoice.add(ns);
             availableExtraWorkInvoice.remove(selectedEWINVOICE);
         }
     }
     
     public void removeSelectedServicePo(){
-        if(selectedSRINVOICE!=null){
-            selectedServiceWorkInvoice.remove(selectedSRINVOICE);
-            availableServiceWorkInvoice.add(selectedSRINVOICE);
+        if(selectedJSRINVOICE!=null){
+            selectedServiceWorkInvoice.remove(selectedJSRINVOICE);
+            availableServiceWorkInvoice.add(selectedJSRINVOICE.getCustomerServiceInvoice());
         }
     }
     
     public void removeSelectedExtaworkPo(){
-        if(selectedEWINVOICE!=null){
-            selectedExtraWorkInvoice.remove(selectedEWINVOICE);
-            availableExtraWorkInvoice.add(selectedEWINVOICE);
+        if(selectedJEWINVOICE!=null){
+            selectedExtraWorkInvoice.remove(selectedJEWINVOICE);
+            availableExtraWorkInvoice.add(selectedJEWINVOICE.getCustomerExtraworkInvoice());
         }
     }
     
@@ -294,13 +318,7 @@ public class NetSalesController implements Serializable {
         this.availableServiceWorkInvoice = availableServiceWorkInvoice;
     }
 
-    public List<CustomerExtraworkInvoice> getSelectedExtraWorkInvoice() {
-        return selectedExtraWorkInvoice;
-    }
-
-    public void setSelectedExtraWorkInvoice(List<CustomerExtraworkInvoice> selectedExtraWorkInvoice) {
-        this.selectedExtraWorkInvoice = selectedExtraWorkInvoice;
-    }
+    
 
     public CustomerExtraworkInvoice getSelectedEWINVOICE() {
         return selectedEWINVOICE;
@@ -310,13 +328,7 @@ public class NetSalesController implements Serializable {
         this.selectedEWINVOICE = selectedEWINVOICE;
     }
 
-    public List<CustomerServiceInvoice> getSelectedServiceWorkInvoice() {
-        return selectedServiceWorkInvoice;
-    }
-
-    public void setSelectedServiceWorkInvoice(List<CustomerServiceInvoice> selectedServiceWorkInvoice) {
-        this.selectedServiceWorkInvoice = selectedServiceWorkInvoice;
-    }
+    
 
     public CustomerServiceInvoice getSelectedSRINVOICE() {
         return selectedSRINVOICE;
@@ -340,6 +352,38 @@ public class NetSalesController implements Serializable {
 
     public void setCustomerServiceInvoiceController(CustomerServiceInvoiceController customerServiceInvoiceController) {
         this.customerServiceInvoiceController = customerServiceInvoiceController;
+    }
+
+    public List<NetsalesJCustomerExtraworkInvoice> getSelectedExtraWorkInvoice() {
+        return selectedExtraWorkInvoice;
+    }
+
+    public void setSelectedExtraWorkInvoice(List<NetsalesJCustomerExtraworkInvoice> selectedExtraWorkInvoice) {
+        this.selectedExtraWorkInvoice = selectedExtraWorkInvoice;
+    }
+
+    public NetsalesJCustomerExtraworkInvoice getSelectedJEWINVOICE() {
+        return selectedJEWINVOICE;
+    }
+
+    public void setSelectedJEWINVOICE(NetsalesJCustomerExtraworkInvoice selectedJEWINVOICE) {
+        this.selectedJEWINVOICE = selectedJEWINVOICE;
+    }
+
+    public List<NetsalesJCustomerServiceInvoice> getSelectedServiceWorkInvoice() {
+        return selectedServiceWorkInvoice;
+    }
+
+    public void setSelectedServiceWorkInvoice(List<NetsalesJCustomerServiceInvoice> selectedServiceWorkInvoice) {
+        this.selectedServiceWorkInvoice = selectedServiceWorkInvoice;
+    }
+
+    public NetsalesJCustomerServiceInvoice getSelectedJSRINVOICE() {
+        return selectedJSRINVOICE;
+    }
+
+    public void setSelectedJSRINVOICE(NetsalesJCustomerServiceInvoice selectedJSRINVOICE) {
+        this.selectedJSRINVOICE = selectedJSRINVOICE;
     }
 
     

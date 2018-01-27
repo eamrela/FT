@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+       
+        <p:dialog id="editDlgCosId" modal="true" widgetVar="editDlgCos" closeOnEscape="true" resizable="false" 
+                  height="400" width="700" appendTo="@(body)" header="Edit COS">
+            <h:form id="editCosForm">
+
+                <h:panelGroup rendered="#{costOfSalesController.selectedUserCos!=null}">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group">
+                    <label class="control-label" for="ewAsp">ASP:</label>
+                    <h:selectOneMenu id="ewAsp"
+                                     value="#{costOfSalesController.selectedUserCos.aspName}"
+                                             styleClass="form-control"
+                                             required="true"
+                                             requiredMessage="ASP can't be empty">
+                                <f:selectItem itemLabel="" itemValue="#{null}"/>
+                                <f:selectItems value="#{subcontractorsController.itemsAvailableSelectOne}" 
+                                               var="aspItem"
+                                               itemValue="#{aspItem.subcontractorName}"
+                                               itemLabel="#{aspItem.subcontractorName}"/>
+                    </h:selectOneMenu>
+                    </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group">
+                    <label class="control-label" for="jvValue">COS Value:</label>
+                    <p:inputNumber id="jvValue" 
+                                   class="form-control" 
+                                   symbol=" EGP" 
+                                   symbolPosition="s"
+                                   decimalSeparator="." thousandSeparator=","
+                                   value="#{costOfSalesController.selectedUserCos.originalAmount}"
+                                   required="true"
+                                   requiredMessage="Amount Value can't be empty"/>
+                    </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                    <label class="control-label" for="ewSubDomain">Stream:</label>
+                    <h:selectOneMenu id="ewSubDomain"
+                                     value="#{costOfSalesController.selectedUserCos.category}"
+                                             styleClass="form-control">
+                                <f:selectItem itemLabel="" itemValue="#{null}"/>
+                                <f:selectItems value="#{subDomainController.itemsAvailableSelectOne}" 
+                                               var="subdomainItem"
+                                               itemValue="#{subdomainItem.subdomainName}"
+                                               itemLabel="#{subdomainItem.subdomainName}"/>
+                    </h:selectOneMenu>
+                    </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                    <label class="control-label" for="ewCodeDescription">Description:</label>
+                    <h:inputTextarea id="ewCodeDescription" required="true" requiredMessage="Description can't be empty" 
+                                     class="form-control" value="#{costOfSalesController.selectedUserCos.description}"
+                                 />
+                    </div>
+                    </div>
+                </div>
+                
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <p:commandButton class="btn btn-block btn-success" actionListener="#{costOfSalesController.updateEdit}" value="Update"
+                                     update=":cosForm:datalistCos,:cosForm:growl" 
+                                     oncomplete="handleSubmit(args, 'editDlgCos');"/>
+
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                     <p:commandButton class="btn btn-block btn-warning" value="Cancel" onclick="editDlgCos.hide()"/>
+                </div>
+            </div>
+
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+     
+    </ui:composition>
+</html>
+

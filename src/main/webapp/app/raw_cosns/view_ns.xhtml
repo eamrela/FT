@@ -3,7 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       class="no-js css-menubar"
-      xmlns:FT="http://xmlns.jcp.org/jsf/composite/components">
+      xmlns:FT="http://xmlns.jcp.org/jsf/composite/components"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -37,18 +40,211 @@
     <script src="#{resource['app/global/vendor/modernizr/modernizr.min.js']}"></script>
     <script src="#{resource['app/global/vendor/breakpoints/breakpoints.min.js']}"></script>
 
+    <style>
+            .ui-growl{top: 100px;}
+            .ui-fileupload .start {
+            display: none;
+            }
+            .ui-fileupload .cancel {
+                display: none;
+            }
+            .ui-fileupload .progress {
+                display: none;
+            }
+            .ui-fileupload-progress {
+                display: none;
+            }
+              .ui-fileupload-content .ui-progressbar {
+                width: 0px;
+                height: 0px;
+                margin: 0
+                }
+        </style>
+        
     </h:head>
     <h:body>
     <FT:TopBar/>
     <FT:NavigationMenu/>
     <!-- Page -->
     <div class="page animsition">
+    <h:form id="nsForm">
+    <p:growl id="growl"/>
     <div class="page-content">
-      <h2>Blank</h2>
-      <p>Page content goes here</p>
+      <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                <p:dataTable id="datalistNs"
+                             var="ns" 
+                             value="#{netSalesController.items}"
+                             rowKey="#{ns.netsalesId}"
+                             rows="20"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             selectionMode="single"
+                             selection="#{netSalesController.selectedUserNs}"
+                             >
+                        <p:ajax event="rowSelect"   update=":nsForm:menuItemsNs,
+                                                            deleteButton"/>
+                        
+                    <p:column style="font-size: 9px;width: 30px;">
+                        <p:rowToggler/>
+                    </p:column>     
+                    <p:column headerText="NS#" 
+                              style="font-size: 9px;"
+                              filterMatchMode="contains"
+                              filterBy="#{ns.netsalesId}">
+                        <h:outputText value="#{ns.netsalesId}" />
+                    </p:column>
+                    <p:column headerText="Description" 
+                              style="font-size: 9px;"
+                              filterMatchMode="contains"
+                              filterBy="#{ns.description}">
+                        <h:outputText value="#{ns.description}" />
+                    </p:column>
+                    <p:column headerText="Category" 
+                              style="font-size: 9px;"
+                              filterMatchMode="contains"
+                              filterBy="#{ns.category}">
+                        <h:outputText value="#{ns.category}" />
+                    </p:column>
+                    <p:column headerText="Original Amount" 
+                              style="font-size: 9px;">
+                        <h:outputText value="#{ns.originalAmount}">
+                            <f:convertNumber type="currency" currencyCode="EGP"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Remaining Amount" 
+                              style="font-size: 9px;">
+                        <h:outputText value="#{ns.netsalesAmount}">
+                            <f:convertNumber type="currency" currencyCode="EGP"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Invoice Issued" 
+                              style="font-size: 9px;"
+                              filterMatchMode="contains"
+                              filterBy="#{ns.invoiceIssued}">
+                        <h:outputText value="#{ns.invoiceIssued}" >
+                            <f:convertNumber type="currency" currencyCode="EGP"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:rowExpansion>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <label>Settlement Service Invoices</label>
+                        <p:dataTable id="datalistServicePo"
+                                             var="poSr" 
+                                             value="#{ns.netsalesJCustomerServiceInvoiceCollection}"
+                                             rows="3"
+                                             paginator="true"
+                                             paginatorPosition="bottom">
+                        <p:column headerText="PO#" 
+                                        style="font-size: 9px;">
+                                <h:outputText value="#{poSr.customerServiceInvoice.poNumer.poNumber}" />
+                        </p:column>
+                        <p:column headerText="Invoice#" 
+                                        style="font-size: 9px;">
+                                <h:outputText value="#{poSr.customerServiceInvoice.invoiceNumber}" />
+                        </p:column>
+                        <p:column headerText="Date" 
+                                    style="font-size: 9px;">
+                              <h:outputText value="#{poSr.customerServiceInvoice.invoiceDate}">
+                                  <f:convertDateTime pattern="yyyy/MM/dd"/>
+                              </h:outputText>
+                        </p:column>
+                        <p:column headerText="Description" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poSr.customerServiceInvoice.poNumer.poDescription}" />
+                        </p:column>
+                        <p:column headerText="Invoice Value" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poSr.customerServiceInvoice.invoiceValue}">
+                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Settle %" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poSr.settlePercentage}">
+                                <f:convertNumber type="percent" />
+                            </h:outputText>
+                        </p:column>
+                        </p:dataTable>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <label>Settlement Extra work Invoices</label>
+                            <p:dataTable id="datalistExtraworkPo"
+                                             var="poEw" 
+                                             value="#{ns.netsalesJCustomerExtraworkInvoiceCollection}"
+                                             rows="3"
+                                             paginator="true"
+                                             paginatorPosition="bottom">
+                        <p:column headerText="PO#" 
+                                        style="font-size: 9px;">
+                                <h:outputText value="#{poEw.customerExtraworkInvoice.poNumer.poNumber}" />
+                        </p:column>
+                        <p:column headerText="Invoice#" 
+                                        style="font-size: 9px;">
+                                <h:outputText value="#{poEw.customerExtraworkInvoice.invoiceNumber}" />
+                        </p:column>
+                        <p:column headerText="Date" 
+                                    style="font-size: 9px;">
+                              <h:outputText value="#{poEw.customerExtraworkInvoice.invoiceDate}">
+                                  <f:convertDateTime pattern="yyyy/MM/dd"/>
+                              </h:outputText>
+                        </p:column>
+                        <p:column headerText="Description" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poEw.customerExtraworkInvoice.poNumer.poDescription}" />
+                        </p:column>
+                        <p:column headerText="Invoice Value" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poEw.customerExtraworkInvoice.invoiceValue}">
+                                <f:convertNumber type="currency" currencyCode="EGP"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Settle %" 
+                                  style="font-size: 9px;">
+                            <h:outputText value="#{poEw.settlePercentage}">
+                                <f:convertNumber type="percent"/>
+                            </h:outputText>
+                        </p:column>
+                        </p:dataTable>
+                        </div>
+                    </p:rowExpansion>
+                    <f:facet name="footer">
+                        <p:commandButton id="deleteButton" 
+                                         icon="ui-icon-trash"  
+                                         value="Delete" 
+                                         actionListener="#{netSalesController.deleteNs}" 
+                                         update=":nsForm:growl,datalistNs" 
+                                         disabled="#{empty netSalesController.selectedUserNs}"/>
+                        <h:commandLink>
+                            <img src="csv.png"/>
+                           <p:dataExporter type="csv" target="datalistNs" fileName="Net-Sales.csv" />
+                       </h:commandLink>
+                    </f:facet>
+                </p:dataTable>
+                <p:contextMenu id="menuItemsNs" for="datalistNs">
+                            <p:menuitem value="Settle" 
+                                        icon="ui-icon-pencil" 
+                                        oncomplete="PF('settleDlgNs').show();"
+                                        actionListener="#{netSalesController.prepareEdit}"
+                                        update="datalistNs,:settleNsForm" 
+                                        disabled="#{empty netSalesController.selectedUserNs}"/>
+                            <p:menuitem value="Edit" 
+                                        icon="ui-icon-pencil" 
+                                        oncomplete="PF('editDlgNs').show();"
+                                        actionListener="#{netSalesController.prepareEdit}"
+                                        update="datalistNs,:editNsForm" 
+                                        disabled="#{empty netSalesController.selectedUserNs}"/>
+                </p:contextMenu>
+                </div>
+              
+            </div>
     </div>
+    </h:form>
     </div>
     <!-- End Page -->
+    <ui:include src="modals/ns/settle_ns.xhtml"/> 
+    <ui:include src="modals/ns/edit_ns.xhtml"/> 
     <FT:Footer/>
   
 

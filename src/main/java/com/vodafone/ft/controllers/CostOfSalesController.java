@@ -8,10 +8,12 @@ import com.vodafone.ft.beans.CostOfSalesFacade;
 import com.vodafone.ft.controllers.util.JsfUtil;
 import com.vodafone.ft.controllers.util.JsfUtil.PersistAction;
 import com.vodafone.ft.entities.AspExtraworkGrn;
-import com.vodafone.ft.entities.AspExtraworkPo;
 import com.vodafone.ft.entities.AspServiceGrn;
-import com.vodafone.ft.entities.AspServicePo;
 import com.vodafone.ft.entities.CostOfSales;
+import com.vodafone.ft.entities.CostOfSalesJAspExtraworkGrn;
+import com.vodafone.ft.entities.CostOfSalesJAspExtraworkGrnPK;
+import com.vodafone.ft.entities.CostOfSalesJAspServiceGrn;
+import com.vodafone.ft.entities.CostOfSalesJAspServiceGrnPK;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,12 +39,17 @@ public class CostOfSalesController implements Serializable {
     private List<CostOfSales> items = null;
     private CostOfSales selected;
     private CostOfSales selectedUserCos;
+    
     private List<AspExtraworkGrn> availableExtraWorkGrn;
     private List<AspServiceGrn> availableServiceWorkGrn;
-    private List<AspExtraworkGrn> selectedExtraWorkGrn;
+    
+    private List<CostOfSalesJAspExtraworkGrn> selectedExtraWorkGrn;
     private AspExtraworkGrn selectedEWGRN;
-    private List<AspServiceGrn> selectedServiceWorkGrn;
+    private CostOfSalesJAspExtraworkGrn selectedJEWGRN;
+    
+    private List<CostOfSalesJAspServiceGrn> selectedServiceWorkGrn;
     private AspServiceGrn selectedSRGRN;
+    private CostOfSalesJAspServiceGrn selectedJSRGRN;
     
     @Inject
     private AspExtraworkGrnController aspExtaWorkGrnController;
@@ -219,23 +226,30 @@ public class CostOfSalesController implements Serializable {
     
     public void updateEdit(){
         selected = selectedUserCos;
-        for (AspExtraworkGrn selectedExtraWorkGrn1 : selectedExtraWorkGrn) {
-            if(selected.getAspExtraworkGrnCollection()!=null){
-                    selected.getAspExtraworkGrnCollection().add(selectedExtraWorkGrn1);
+        selected.setCostAmount(selected.getOriginalAmount()-selected.getGrnIssued());
+        for (CostOfSalesJAspExtraworkGrn selectedExtraWorkGrn1 : selectedExtraWorkGrn) {
+            if(selectedExtraWorkGrn1.getSettlePercentage()!=null){
+            if(selected.getCostOfSalesJAspExtraworkGrnCollection()!=null){
+                    selected.getCostOfSalesJAspExtraworkGrnCollection().add(selectedExtraWorkGrn1);
             }else{
-                selected.setAspExtraworkGrnCollection(new ArrayList<AspExtraworkGrn>());
-                selected.getAspExtraworkGrnCollection().add(selectedExtraWorkGrn1);
+                selected.setCostOfSalesJAspExtraworkGrnCollection(new ArrayList<CostOfSalesJAspExtraworkGrn>());
+                selected.getCostOfSalesJAspExtraworkGrnCollection().add(selectedExtraWorkGrn1);
             }
-            selected.setCostAmount(selected.getCostAmount()-selectedExtraWorkGrn1.getGrnValue());
+            selected.setCostAmount(selected.getCostAmount()-(selectedExtraWorkGrn1.getAspExtraworkGrn().getGrnValue()
+                                                        *selectedExtraWorkGrn1.getSettlePercentage()));
+            }
         }
-        for (AspServiceGrn selectedServieGrn1 : selectedServiceWorkGrn) {
-            if(selected.getAspServiceGrnCollection()!=null){
-                    selected.getAspServiceGrnCollection().add(selectedServieGrn1);
+        for (CostOfSalesJAspServiceGrn selectedServieGrn1 : selectedServiceWorkGrn) {
+            if(selectedServieGrn1.getSettlePercentage()!=null){
+            if(selected.getCostOfSalesJAspServiceGrnCollection()!=null){
+                    selected.getCostOfSalesJAspServiceGrnCollection().add(selectedServieGrn1);
             }else{
-                selected.setAspServiceGrnCollection(new ArrayList<AspServiceGrn>());
-                selected.getAspServiceGrnCollection().add(selectedServieGrn1);
+                selected.setCostOfSalesJAspServiceGrnCollection(new ArrayList<CostOfSalesJAspServiceGrn>());
+                selected.getCostOfSalesJAspServiceGrnCollection().add(selectedServieGrn1);
             }
-            selected.setCostAmount(selected.getCostAmount()-selectedServieGrn1.getGrnValue());
+            selected.setCostAmount(selected.getCostAmount()-(selectedServieGrn1.getAspServiceGrn().getGrnValue()*
+                                                            selectedServieGrn1.getSettlePercentage()));
+            }
         }
         update();
     }
@@ -293,11 +307,11 @@ public class CostOfSalesController implements Serializable {
         this.availableServiceWorkGrn = availableServiceWorkGrn;
     }
 
-    public List<AspExtraworkGrn> getSelectedExtraWorkGrn() {
+    public List<CostOfSalesJAspExtraworkGrn> getSelectedExtraWorkGrn() {
         return selectedExtraWorkGrn;
     }
 
-    public void setSelectedExtraWorkGrn(List<AspExtraworkGrn> selectedExtraWorkGrn) {
+    public void setSelectedExtraWorkGrn(List<CostOfSalesJAspExtraworkGrn> selectedExtraWorkGrn) {
         this.selectedExtraWorkGrn = selectedExtraWorkGrn;
     }
 
@@ -309,11 +323,11 @@ public class CostOfSalesController implements Serializable {
         this.selectedEWGRN = selectedEWGRN;
     }
 
-    public List<AspServiceGrn> getSelectedServiceWorkGrn() {
+    public List<CostOfSalesJAspServiceGrn> getSelectedServiceWorkGrn() {
         return selectedServiceWorkGrn;
     }
 
-    public void setSelectedServiceWorkGrn(List<AspServiceGrn> selectedServiceWorkGrn) {
+    public void setSelectedServiceWorkGrn(List<CostOfSalesJAspServiceGrn> selectedServiceWorkGrn) {
         this.selectedServiceWorkGrn = selectedServiceWorkGrn;
     }
 
@@ -325,33 +339,60 @@ public class CostOfSalesController implements Serializable {
         this.selectedSRGRN = selectedSRGRN;
     }
 
+    public CostOfSalesJAspExtraworkGrn getSelectedJEWGRN() {
+        return selectedJEWGRN;
+    }
+
+    public void setSelectedJEWGRN(CostOfSalesJAspExtraworkGrn selectedJEWGRN) {
+        this.selectedJEWGRN = selectedJEWGRN;
+    }
+
+    public CostOfSalesJAspServiceGrn getSelectedJSRGRN() {
+        return selectedJSRGRN;
+    }
+
+    public void setSelectedJSRGRN(CostOfSalesJAspServiceGrn selectedJSRGRN) {
+        this.selectedJSRGRN = selectedJSRGRN;
+    }
+
+    
     
 
     public void addSelectedServicePo(){
         if(selectedSRGRN!=null){
-            selectedServiceWorkGrn.add(selectedSRGRN);
+            CostOfSalesJAspServiceGrn cos = new CostOfSalesJAspServiceGrn();
+            cos.setAspServiceGrn(selectedSRGRN);
+            cos.setCostOfSales(selectedUserCos);
+            cos.setCostOfSalesJAspServiceGrnPK(new CostOfSalesJAspServiceGrnPK(cos.getCostOfSales().getCostId(),
+                                            cos.getAspServiceGrn().getId()));
+            selectedServiceWorkGrn.add(cos);
             availableServiceWorkGrn.remove(selectedSRGRN);
         }
     }
     
     public void addSelectedExtaworkPo(){
         if(selectedEWGRN!=null){
-            selectedExtraWorkGrn.add(selectedEWGRN);
+            CostOfSalesJAspExtraworkGrn cos = new CostOfSalesJAspExtraworkGrn();
+            cos.setAspExtraworkGrn(selectedEWGRN);
+            cos.setCostOfSales(selectedUserCos);
+            cos.setCostOfSalesJAspExtraworkGrnPK(new CostOfSalesJAspExtraworkGrnPK(cos.getCostOfSales().getCostId(),
+                                            cos.getAspExtraworkGrn().getId()));
+            selectedExtraWorkGrn.add(cos);
             availableExtraWorkGrn.remove(selectedEWGRN);
         }
     }
     
     public void removeSelectedServicePo(){
-        if(selectedSRGRN!=null){
-            selectedServiceWorkGrn.remove(selectedSRGRN);
-            availableServiceWorkGrn.add(selectedSRGRN);
+        if(selectedJSRGRN!=null){
+            selectedServiceWorkGrn.remove(selectedJSRGRN);
+            availableServiceWorkGrn.add(selectedJSRGRN.getAspServiceGrn());
         }
     }
     
     public void removeSelectedExtaworkPo(){
-        if(selectedEWGRN!=null){
-            selectedExtraWorkGrn.remove(selectedEWGRN);
-            availableExtraWorkGrn.add(selectedEWGRN);
+        if(selectedJEWGRN!=null){
+            selectedExtraWorkGrn.remove(selectedJEWGRN);
+            availableExtraWorkGrn.add(selectedJEWGRN.getAspExtraworkGrn());
         }
     }
 }

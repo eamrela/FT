@@ -3,7 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       class="no-js css-menubar"
-      xmlns:FT="http://xmlns.jcp.org/jsf/composite/components">
+      xmlns:FT="http://xmlns.jcp.org/jsf/composite/components"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -36,17 +38,132 @@
     
     <script src="#{resource['app/global/vendor/modernizr/modernizr.min.js']}"></script>
     <script src="#{resource['app/global/vendor/breakpoints/breakpoints.min.js']}"></script>
-
+    <f:metadata>
+        <f:viewAction action="#{dashboardController.initialize}"/>
+   </f:metadata>
     </h:head>
     <h:body>
     <FT:TopBar/>
     <FT:NavigationMenu/>
     <!-- Page -->
     <div class="page animsition">
+    <h:form id="dashboardForm">
     <div class="page-content">
-      <h2>Blank</h2>
-      <p>Page content goes here</p>
+        <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-4">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Needed GRNs</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <p:dataTable var="grnDeserved" value="#{dashboardController.grnDeservedTotal}">
+                                <p:column headerText="ASP">
+                                    <h:outputText value="#{grnDeserved.aspName}" />
+                                </p:column>
+                                <p:column headerText="Deserved">
+                                    <h:outputText value="#{grnDeserved.totalCOS}">
+                                        <f:convertNumber type="currency" currencySymbol="EGP"/>
+                                    </h:outputText>
+                                </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>GRN Details</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                            <p:dataTable id="grnDetailsService" var="grnDetailsService" value="#{dashboardController.grnDeservedDetailsService}"
+                                         paginator="true" paginatorPosition="bottom" rows="7">
+                                <f:facet name="header">Service</f:facet>
+                                <p:column headerText="PO#" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsService.poNumber}" />
+                                </p:column>
+                                <p:column headerText="ASP" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsService.subcontractor}" />
+                                </p:column>
+                                <p:column headerText="Domain" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsService.domainName}" />
+                                </p:column>
+                                <p:column headerText="Subdomain" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsService.subDomain}" />
+                                </p:column>
+                                <p:column headerText="PO Value" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsService.poValue}" >
+                                        <f:convertNumber type="currency" currencySymbol="EGP"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Description" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsService.poDescription}" />
+                                </p:column>
+                                <p:column headerText="Date" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsService.poDate}" >
+                                        <f:convertDateTime pattern="yyyy/MM/dd"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="GRN Deserved" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsService.grnDeserved}" >
+                                        <f:convertNumber type="currency" currencySymbol="EGP"/>
+                                    </h:outputText>
+                                </p:column>
+                                <f:facet name="footer">
+                                    <h:commandLink>
+                                        <img src="csv.png"/>
+                                       <p:dataExporter type="csv" target="grnDetailsService" fileName="grn_Deserved_Service" />
+                                   </h:commandLink>
+                                </f:facet>
+                            </p:dataTable>
+                            <p:dataTable id="grnDetailsExtra" var="grnDetailsExtrawork" value="#{dashboardController.grnDeservedDetailsExtrawork}"
+                                         paginator="true" paginatorPosition="bottom" rows="7">
+                                <f:facet name="header">Extra Work</f:facet>
+                                <p:column headerText="PO#" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsExtrawork.poNumber}" />
+                                </p:column>
+                                <p:column headerText="ASP" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsExtrawork.subcontractor}" />
+                                </p:column>
+                                <p:column headerText="Domain" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsExtrawork.domainName}" />
+                                </p:column>
+                                <p:column headerText="Subdomain" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsExtrawork.subDomain}" />
+                                </p:column>
+                                <p:column headerText="PO Value" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsExtrawork.poValue}" >
+                                        <f:convertNumber type="currency" currencySymbol="EGP"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Description" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsExtrawork.poDescription}" />
+                                </p:column>
+                                <p:column headerText="Date" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsExtrawork.poDate}" >
+                                        <f:convertDateTime pattern="yyyy/MM/dd"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="GRN Deserved" style="font-size: 9px;">
+                                    <h:outputText value="#{grnDetailsExtrawork.grnDeserved}" >
+                                        <f:convertNumber type="currency" currencySymbol="EGP"/>
+                                    </h:outputText>
+                                </p:column>
+                                <f:facet name="footer">
+                                    <h:commandLink>
+                                        <img src="csv.png"/>
+                                       <p:dataExporter type="csv" target="grnDetailsExtra" fileName="grn_Deserved_Extrawork" />
+                                   </h:commandLink>
+                                </f:facet>
+                            </p:dataTable>
+                            </div>
+                        </div>
+                    </div>
+        </div>
     </div>
+    </h:form>
     </div>
     <!-- End Page -->
     <FT:Footer/>
